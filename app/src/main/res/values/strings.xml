@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">BookLab</string>
+    <string name="welcome_text">Welcome\nto\n<font color="#FF0000">BookLab</font></string>
+    <string name="activity_Login_Dont_Have_Account_Yet_Register">Don\'t have account yet? <font color="#2196F3">Register.</font></string>
 </resources>

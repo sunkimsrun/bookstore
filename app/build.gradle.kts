@@ -5,6 +5,7 @@ plugins {
 android {
     namespace = "com.example.myapplication"
     compileSdk = 36
+    viewBinding.enable = true
 
     defaultConfig {
         applicationId = "com.example.myapplication"
@@ -32,7 +33,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.lottie)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
