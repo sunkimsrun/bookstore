@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="46dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="46dp" />
+
+    <TextView
+        android:id="@+id/complete_profile"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="163dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:gravity="top"
+        android:text="complete your profile"
+        android:textColor="#1E1E1E"
+        android:textSize="36sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/don_t_worry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:text="Don’t worry, we not selling your data."
+        android:textSize="12sp"
+        android:textColor="#7A7A7A"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="46dp"
+        app:layout_constraintTop_toBottomOf="@id/complete_profile"
+        app:layout_constraintBottom_toTopOf="@+id/input_person"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.087"
+        tools:ignore="TextContrastCheck"/>
+
+    <RelativeLayout
+        android:id="@+id/input_person"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/frame_main"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/don_t_worry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user"
+            app:shapeAppearanceOverlay="@style/UserCompleteImageView" />
+
+        <RelativeLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="68dp"
+            android:background="@drawable/frame_edit"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_edit" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/user_input_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginTop="36dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/input_person"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_gray_rectangle"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_gender"
+                tools:ignore="ContentDescription" />
+
+            <Spinner
+                android:id="@+id/genderAuthSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:entries="@array/gender" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/phoneNumberAuth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:autofillHints="phone"
+            android:background="@drawable/bg_gray_rectangle"
+            android:drawableStart="@drawable/ico_phone"
+            android:maxLines="1"
+            android:maxLength="14"
+            android:drawablePadding="10dp"
+            android:hint="Phone Number"
+            android:paddingHorizontal="10dp"
+            tools:ignore="TextFields" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:backgroundTint="@color/light_blue"
+        android:enabled="true"
+        android:text="complete"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintTop_toBottomOf="@id/user_input_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RelativeLayout
+        android:id="@+id/loadingBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:elevation="26dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_marginTop="30dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

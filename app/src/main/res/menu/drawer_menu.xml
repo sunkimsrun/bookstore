@@ -1,0 +1,44 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Checkable group for main navigation -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ico_home"
+            android:title="Home"
+            tools:ignore="HardcodedText" />
+
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ico_user"
+            android:title="Account"
+            tools:ignore="HardcodedText" />
+
+<!--        ថ្មីកន្លែងនេះ-->
+        <item
+            android:id="@+id/nav_lost"
+            android:icon="@drawable/ico_viewbook"
+            android:title="View All Book"
+            tools:ignore="HardcodedText" />
+
+        <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/ico_shield"
+            android:title="Privacy and Policy"
+            tools:ignore="HardcodedText" />
+
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ico_contact"
+            android:title="About Us"
+            tools:ignore="HardcodedText" />
+
+        <item
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/ico_signout"
+            android:title="Sign Out"
+            tools:ignore="HardcodedText" />
+    </group>
+
+</menu>
