@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-
+    <style name="UserCompleteImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
 
 
 </resources>

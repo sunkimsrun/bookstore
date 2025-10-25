@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/vector_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/vector_screen2" />
+
+    <!-- Background Image fills the whole screen -->
+
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome_screen"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="412dp"
+        android:layout_height="131dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="144dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="welcome to"
+        android:textColor="@color/red"
+        android:textSize="38sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/background_image" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="183.4dp"
+        android:layout_height="171.7dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lacquer_regular"
+        android:text="BookLab"
+        android:textColor="#1E1E1E"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/some_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/some_id"
+        android:layout_width="420dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/welcome_screen1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/submitBtn"
+        android:layout_width="183dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="112dp"
+        android:background="@drawable/bg_gray"
+        android:gravity="center_horizontal|top"
+        android:text="get start"
+        android:textColor="@color/red"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@+id/background_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="@+id/some_id"
+        app:layout_constraintTop_toTopOf="@+id/some_id"
+        app:layout_constraintVertical_bias="0.031" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
