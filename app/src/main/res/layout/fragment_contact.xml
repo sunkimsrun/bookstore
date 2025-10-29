@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_contact"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="20dp"
+    tools:context=".fragment.ContactFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Our Shop"
+                android:textSize="24sp"
+                android:fontFamily="@font/kavivanar"/>
+
+
+<!--            នេះកន្លែង រូបភាព និង dot-->
+            <RelativeLayout
+                android:layout_width="353dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <!-- Row of Images -->
+                <LinearLayout
+                    android:id="@+id/contact_images_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="148dp"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/contact_img1"
+                        android:layout_width="341dp"
+                        android:layout_height="205dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/contact_img1"
+                        android:visibility="visible" />
+
+                    <View
+                        android:id="@+id/contact_img2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/contact_img2"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/contact_img3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/contact_img3"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/contact_img4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/contact_img4"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/contact_img5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/contact_img5"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <!-- Dots Indicator -->
+                <LinearLayout
+                    android:id="@+id/frame_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contact_images_row"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/dot_1"
+                        android:layout_width="16dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/dot_inactive" />
+
+                    <View
+                        android:id="@+id/dot_2"
+                        android:layout_width="16dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="#F9F1F1" />
+
+                    <View
+                        android:id="@+id/dot_3"
+                        android:layout_width="16dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="#F9F1F1" />
+
+                    <View
+                        android:id="@+id/dot_4"
+                        android:layout_width="16dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="#F9F1F1" />
+
+                    <View
+                        android:id="@+id/dot_5"
+                        android:layout_width="16dp"
+                        android:layout_height="14dp"
+                        android:background="#F9F1F1" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/welcome_to_"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal|top"
+                android:lineSpacingExtra="7sp"
+                android:text="@string/contact_description"
+                android:textColor="#161619"
+                android:textSize="13sp"
+                android:translationY="-3.5sp" />
+
+
+            <!--កន្លែងនេះជាកន្លែងត្រូវថែមថ្មី-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                tools:ignore="UselessParent">
+
+                <RelativeLayout
+                    android:id="@+id/tvEmail"
+                    android:layout_width="280dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_contact_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
+                            android:layout_marginRight="15dp"
+                            android:contentDescription="Ico Message"
+                            android:src="@drawable/ico_mail"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email"
+                            android:textSize="20sp" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tvLocation"
+                    android:layout_width="280dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_contact_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="30sp"
+                            android:layout_height="30dp"
+
+                            android:layout_marginRight="15dp"
+                            android:contentDescription="Ico Message"
+                            android:src="@drawable/ico_contact_location"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location"
+                            android:textSize="17sp" />
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/tvCall"
+                    android:layout_width="280dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_contact_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="20dp"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="30sp"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="15dp"
+                            android:contentDescription="Ico Message"
+                            android:src="@drawable/ico_contact_phone"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="contact Number"
+                            android:layout_marginRight="57dp"
+                            android:textSize="18sp" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <!-- Check Our Social Media -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Check our social media"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"
+                    android:layout_margin="15sp"
+                    tools:ignore="HardcodedText" />
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="20sp"
+                        android:paddingLeft="5dp"
+                        android:contentDescription="Ico Facebook"
+                        android:src="@drawable/ico_facebook"
+                        tools:ignore="HardcodedText" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:contentDescription="Ico Telegram"
+                        android:src="@drawable/ico_telegram"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

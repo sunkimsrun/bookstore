@@ -6,5 +6,17 @@
         <item name="cornerSize">50dp</item>
     </style>
 
+    <style name="booklab_pri">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">#F50000</item>
+    </style>
+
+    <style name="information">
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.07</item>
+        <item name="android:textColor">#1500FF</item>
+    </style>
+
 
 </resources>
