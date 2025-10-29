@@ -9,5 +9,21 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="booklab_pri">
+Welcome to BookLab! Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you use our online bookstore platform.
+</string>
+
+
+
+    <string name="information">
+        1. Information We Collect \nWhen you create an account, make a purchase, or interact with BookLab, we may collect the following information:\nPersonal Information: Your name, email address, phone number, and payment details when you make a purchase or create an account.\nBook Information: Details related to your purchases, wishlist, or reading preferences to help us recommend books you might enjoy.\nUsage Data: Information about how you interact with our platform, such as pages viewed, searches, and shopping activities.\nDevice Information: Details about the device you use to access BookLab, including your IP address, browser type, and operating system.\n2. How We Use Your Information\u00e2\u0080\u00a8 We use your information to:\nProcess your purchases and deliver your orders.\nImprove your shopping and reading experience.\nPersonalize book recommendations.\nCommunicate with you about updates, offers, and services.\nEnsure platform security and prevent unauthorized access.\n3. Information Sharing\u00e2\u0080\u00a8 We do not sell or rent your personal data. Your information is only shared with trusted service providers (such as payment processors or delivery partners) to complete your orders or improve our services.\n4. Data Security\u00e2\u0080\u00a8 We use appropriate technical and organizational measures to protect your data from unauthorized access, disclosure, or misuse.\n5. Your Rights\u00e2\u0080\u00a8 You have the right to access, update, or delete your personal information. You may also contact us if you have any privacy-related concerns.
+    </string>
+
+    <string name="contact_description">Welcome to BookLab, where curiosity meets imagination.  Here, every shelf whispers a story, and every book is a doorway to a new adventure.</string>
+
 
 </resources>

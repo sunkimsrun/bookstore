@@ -17,7 +17,7 @@
 
 <!--        ថ្មីកន្លែងនេះ-->
         <item
-            android:id="@+id/nav_lost"
+            android:id="@+id/nav_all_book"
             android:icon="@drawable/ico_viewbook"
             android:title="View All Book"
             tools:ignore="HardcodedText" />
