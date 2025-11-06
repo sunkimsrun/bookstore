@@ -18,5 +18,41 @@
         <item name="android:textColor">#1500FF</item>
     </style>
 
+    <!-- Style : Post Items Image -->
+    <style name="RoundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item>
+    </style>
+
+    <!--  Style : Post Items -->
+    <style name="LabelStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- ✅ UCrop Custom Theme -->
+    <style name="UCropTheme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+
+    <style name="UserPostImageView2" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">21dp</item>
+    </style>
+
+    <style name="CustomStatusStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipCornerRadius">16dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RoundedCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 
 </resources>
