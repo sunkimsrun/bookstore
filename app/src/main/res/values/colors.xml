@@ -9,5 +9,6 @@
     <color name="blue">#0000FF</color>
     <color name="light_blue2">#1591EA</color>
     <color name="bg_header_color">#7CC6FF</color>
+    <color name="light_gray">#F5F5F5</color>
 
 </resources>

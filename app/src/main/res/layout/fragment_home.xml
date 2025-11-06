@@ -1,14 +1,393 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
     tools:context=".fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- Section 1: Top Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginBottom="8dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+
+            <LinearLayout
+                android:id="@+id/swapButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/bg_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/blue_dot" />
+
+                <ImageView
+                    android:id="@+id/bg_dot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/gray_dot" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Section 2: Genre Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/book_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Book Genre"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerGenre"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+        </LinearLayout>
+
+        <!-- Section 3: Recommendation Books Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/recommend_book"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Recommendation Books"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/bg_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/blue_dot" />
+
+                <ImageView
+                    android:id="@+id/bg_dot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/gray_dot" />
+
+                <ImageView
+                    android:id="@+id/bg_dot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/gray_dot" />
+
+                <ImageView
+                    android:id="@+id/bg_dot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/gray_dot" />
+
+                <ImageView
+                    android:id="@+id/bg_dot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="todo"
+                    app:srcCompat="@drawable/gray_dot" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Section 4: All Book Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!-- Top section: Image (left half) + Content (right half) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Left half: Image -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/postImage"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        app:shapeAppearanceOverlay="@style/RoundedImageView"
+                        android:layout_marginEnd="12dp" />
+
+                    <!-- Right half: Content -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Title and Price -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="start"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:id="@+id/postTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Japanese tale"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black"
+                                android:maxLines="2"
+                                android:ellipsize="end"/>
+
+                            <TextView
+                                android:id="@+id/postPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5 $"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+
+                        <!-- Genre -->
+                        <TextView
+                            android:id="@+id/postGenre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Novel"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="@android:color/holo_blue_dark"
+                            android:layout_marginBottom="4dp"/>
+
+                        <!-- Description -->
+                        <TextView
+                            android:id="@+id/postInformation"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="チヒロはおばあちゃんの家いえに今日きょうは1人ひとりで泊とまります。"
+                            android:textSize="11sp"
+                            android:maxLines="3"
+                            android:ellipsize="end"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- Date & Location - Location on left, Date on right -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <!-- Location on LEFT -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginEnd="16dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_calendar"/>
+
+                                <TextView
+                                    android:id="@+id/date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Oct, 10 2025"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+
+                            <!-- Date on RIGHT -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_pin"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="RUPP"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="4dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- User Info - Full width at bottom -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@color/light_gray"
+                    android:padding="8dp"
+                    android:layout_marginTop="8dp"
+                    app:shapeAppearanceOverlay="@style/RoundedCorner">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/userImage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        app:shapeAppearanceOverlay="@style/UserPostImageView2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sun Kimsrun"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/userPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="011 880 778"
+                            android:textSize="11sp"/>
+                    </LinearLayout>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View"
+                        android:textSize="28sp"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/light_blue"
+                        android:clickable="false"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section 5: See More -->
+        <TextView
+            android:id="@+id/tvSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:text="See more..."
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Section 6: Create Book Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cardCreate"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginHorizontal="41.5dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/light_blue"
+            android:text="Create Book"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
+</ScrollView>
