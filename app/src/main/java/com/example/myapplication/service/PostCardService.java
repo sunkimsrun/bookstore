@@ -22,7 +22,8 @@ public interface PostCardService {
             @Query("equalTo") String equalTo
     );
 
-    @GET("{type}.json?orderBy=\"date\"")
+    // REMOVED: the orderBy parameter from the URL to avoid index issues
+    @GET("{type}.json")
     Call<Map<String, PostCard>> getCards(@Path("type") String type);
 
     @GET("{type}/{id}.json")

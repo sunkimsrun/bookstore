@@ -41,14 +41,17 @@ public class PostCard {
     private String createdDate;
 
     @SerializedName("genre")
-    private String genre; // new field for selected genre
+    private String genre;
+
+    @SerializedName("location")
+    private String location;
 
     public PostCard() {
     }
 
     public PostCard(String userId, String postId, String title, String information, String email,
                     String phone, String imageUrl, String price, String date, String time,
-                    String createdDate, String status, String genre) {
+                    String createdDate, String status, String genre, String location) {
         this.userId = userId;
         this.postId = postId;
         this.title = title;
@@ -62,6 +65,7 @@ public class PostCard {
         this.createdDate = createdDate;
         this.status = status;
         this.genre = genre;
+        this.location = location;
     }
 
     // --- Getters & Setters ---
@@ -104,11 +108,14 @@ public class PostCard {
     public String getGenre() { return genre; }
     public void setGenre(String genre) { this.genre = genre; }
 
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
     @Override
     public String toString() {
         return String.format(
-                "PostCard{ imageUrl=%s, postId=%s, title=%s, information=%s, email=%s, phone=%s, price=%s, date=%s, time=%s, status=%s, createdDate=%s, genre=%s }",
-                imageUrl, postId, title, information, email, phone, price, date, time, status, getCreatedDate(), genre
+                "PostCard{ imageUrl=%s, postId=%s, title=%s, information=%s, email=%s, phone=%s, price=%s, date=%s, time=%s, status=%s, createdDate=%s, genre=%s, location=%s }",
+                imageUrl, postId, title, information, email, phone, price, date, time, status, getCreatedDate(), genre, location
         );
     }
 }

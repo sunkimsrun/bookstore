@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -16,10 +19,22 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
+
+        val localProps = Properties()
+        val localFile = rootProject.file("local.properties")
+        if (localFile.exists()) {
+            localProps.load(FileInputStream(localFile))
+        }
+
+        val mapsApiKey: String = localProps.getProperty("MAPS_API_KEY") ?: ""
+
+        manifestPlaceholders["googleMapsKey"] = mapsApiKey
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -48,15 +63,18 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // Firebase
-    implementation("com.google.firebase:firebase-auth:24.0.1")
-    implementation("com.google.firebase:firebase-database:22.0.1")
-    implementation("com.google.firebase:firebase-storage:20.1.0")
-    implementation("com.google.firebase:firebase-firestore:26.15.0")
+    // Firebase Bill of Materials (BOM) - ensures version compatibility
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+
+    // Firebase dependencies without version numbers (they'll use BOM versions)
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore")
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:5.0.5")
-    annotationProcessor("com.github.bumptech.glide:compiler:5.0.5")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // ✅ UCrop (Image Cropping)
     implementation(libs.ucrop)
@@ -75,4 +93,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Map
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
+
+    // Multidex
+    implementation("androidx.multidex:multidex:2.0.1")
 }
