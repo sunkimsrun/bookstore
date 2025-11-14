@@ -25,16 +25,14 @@ Welcome to BookLab! Your privacy is important to us. This Privacy Policy explain
     <string name="contact_description">Welcome to BookLab, where curiosity meets imagination.  Here, every shelf whispers a story, and every book is a doorway to a new adventure.</string>
 
 
-    <resources>
-        <string-array name="book_genres">
-            <item>Japanese</item>
-            <item>Mystery</item>
-            <item>Comedy</item>
-            <item>Historical</item>
-            <item>Biography</item>
-            <item>Horror</item>
-            <item>Fantasy</item>
-        </string-array>
-    </resources>
+    <string-array name="book_genres">
+        <item>Japanese</item>
+        <item>Mystery</item>
+        <item>Comedy</item>
+        <item>Historical</item>
+        <item>Biography</item>
+        <item>Horror</item>
+        <item>Fantasy</item>
+    </string-array>
 
 </resources>

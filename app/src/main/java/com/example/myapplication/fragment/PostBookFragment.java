@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,9 @@ import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentPostBookBinding;
 import com.example.myapplication.model.PostCard;
-import com.example.myapplication.repository.IApiCallback;
-import com.example.myapplication.repository.PostCardRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,6 +60,9 @@ public class PostBookFragment extends Fragment {
         if (currentUser != null) {
             String email = currentUser.getEmail();
             binding.editText.setText(email);
+
+            // Pre-fill phone number if available in user profile
+            prefillUserData(currentUser.getUid());
         }
 
         homeActivity = (HomeActivity) getActivity();
@@ -105,11 +108,8 @@ public class PostBookFragment extends Fragment {
         });
 
         // --- Image Picker ---
-        binding.inputImage.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, IMAGE_PICK_CODE);
-        });
+        binding.inputImage.setOnClickListener(v -> pickImageFromGallery());
+        binding.selectImageOverlay.setOnClickListener(v -> pickImageFromGallery());
 
         // --- Date & Time Picker ---
         binding.tvSelectedDate.setOnClickListener(v -> showDatePicker());
@@ -121,8 +121,13 @@ public class PostBookFragment extends Fragment {
         return view;
     }
 
+    private void prefillUserData(String userId) {
+        // You can add code here to prefill user data from Firebase if needed
+        // For example, if you store user phone numbers in the database
+    }
+
     private void setupGenreSpinner() {
-        String[] genres = {"Book Genre", "Japanese", "Mystery", "Comedy", "Historical", "Biography", "Horror", "Fantasy"};
+        String[] genres = {"Book Genre", "Japanese", "Mystery", "Comedy", "Historical", "Biography", "Horror", "Fantasy", "Romance", "Science Fiction", "Thriller", "Adventure", "Educational"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, genres);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerGenre.setAdapter(adapter);
@@ -143,6 +148,12 @@ public class PostBookFragment extends Fragment {
         });
     }
 
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
@@ -156,6 +167,9 @@ public class PostBookFragment extends Fragment {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
+
+        // Set minimum date to today
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
     }
 
@@ -179,28 +193,58 @@ public class PostBookFragment extends Fragment {
         String phone = binding.editPhone.getText().toString().trim();
         String date = binding.tvSelectedDate.getText().toString().trim();
         String time = binding.tvSelectedTime.getText().toString().trim();
-        String rewardInput = binding.inputprice.getText().toString().trim();
-        String reward = rewardInput.isEmpty() ? null : rewardInput;
+        String priceInput = binding.inputprice.getText().toString().trim();
+        String price = priceInput.isEmpty() ? "Free" : priceInput;
 
-        if (title.isEmpty() || info.isEmpty() || email.isEmpty() || phone.isEmpty() ||
-                date.equals("Select Date") || time.equals("Select Time") || imageUri == null ||
-                selectedGenre.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill in all fields, select an image, and choose a genre.", Toast.LENGTH_SHORT).show();
+        // Validation
+        if (title.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter book title", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (info.isEmpty()) {
+            Toast.makeText(getContext(), "Please describe your book", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedGenre.isEmpty() || selectedGenre.equals("Book Genre")) {
+            Toast.makeText(getContext(), "Please select a book genre", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (date.equals("Select Date")) {
+            Toast.makeText(getContext(), "Please select a date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (time.equals("Select Time")) {
+            Toast.makeText(getContext(), "Please select a time", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (imageUri == null) {
+            Toast.makeText(getContext(), "Please select a book image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phone.length() <= 5) { // Only "+855 " is there
+            Toast.makeText(getContext(), "Please enter your phone number", Toast.LENGTH_SHORT).show();
             return;
         }
 
         showProgressBar();
 
         String filename = UUID.randomUUID().toString() + ".jpg";
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference("lostimages/" + filename);
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference("book_images/" + filename);
 
         storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                uploadDataToDatabase(title, info, email, phone, date, time, reward, uri.toString(), selectedGenre);
+                uploadDataToDatabase(title, info, email, phone, date, time, price, uri.toString(), selectedGenre);
             });
         }).addOnFailureListener(e -> {
             hideProgressBar();
             Toast.makeText(getContext(), "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("PostBookFragment", "Image upload failed: " + e.getMessage());
         });
     }
 
@@ -208,9 +252,20 @@ public class PostBookFragment extends Fragment {
                                       String date, String time, String price, String imageUrl, String genre) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = (user != null) ? user.getUid() : "anonymous";
-        String postId = FirebaseDatabase.getInstance().getReference().push().getKey();
-        if (postId == null) postId = UUID.randomUUID().toString();
+        if (user == null) {
+            hideProgressBar();
+            Toast.makeText(getContext(), "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = user.getUid();
+        String generatedPostId = FirebaseDatabase.getInstance().getReference("books").push().getKey();
+        if (generatedPostId == null) {
+            generatedPostId = UUID.randomUUID().toString();
+        }
+
+        // Use a new final variable for the lambda
+        final String finalPostId = generatedPostId;
 
         PostCard postCard = new PostCard();
         postCard.setTitle(title);
@@ -221,37 +276,29 @@ public class PostBookFragment extends Fragment {
         postCard.setPostTime(time);
         postCard.setImageUrl(imageUrl);
         postCard.setUserId(userId);
-        postCard.setPostId(postId);
+        postCard.setPostId(finalPostId); // Use the final variable here
         postCard.setGenre(genre);
         postCard.setPrice(price);
-        postCard.setStatus("Not Found");
-
+        postCard.setStatus("Available");
+        postCard.setLocation("Royal University of Phnom Penh");
 
         String createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(Calendar.getInstance().getTime());
         postCard.setCreatedDate(createdDate);
 
-        PostCardRepository postCardRepository = new PostCardRepository();
-        postCardRepository.createPost("lostitems", postId, postCard, new IApiCallback<PostCard>() {
-            @Override
-            public void onSuccess(PostCard result) {
-                hideProgressBar();
+        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference("books").child(finalPostId); // And also here
 
-                if (homeActivity != null) {
-                    new android.os.Handler().postDelayed(() -> {
-                        Toast.makeText(getContext(), "Post uploaded successfully", Toast.LENGTH_SHORT).show();
-                        homeActivity.LoadFragment(new SuccessfulFragment());
-                    }, 1500);
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                hideProgressBar();
-                Toast.makeText(getContext(), "Failed to post data: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+        bookRef.setValue(postCard)
+                .addOnSuccessListener(aVoid -> {
+                    hideProgressBar();
+                    // ... your existing code
+                })
+                .addOnFailureListener(e -> {
+                    hideProgressBar();
+                    // ... your existing code
+                });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -268,7 +315,7 @@ public class PostBookFragment extends Fragment {
                     options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
                     options.setCompressionQuality(90);
 
-                    // ✅ Portrait crop only (vertical) កន្លែងនេះកែពីរូបធម្មតាមកprotraitវិញ
+                    // Portrait crop for book images
                     UCrop.of(sourceUri, destinationUri)
                             .withAspectRatio(3, 4)  // width : height
                             .withMaxResultSize(1080, 1440)
@@ -282,7 +329,7 @@ public class PostBookFragment extends Fragment {
                     binding.inputImage.setImageURI(imageUri);
                     binding.inputImage.setBackground(null);
                     binding.selectImageOverlay.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Image cropped and selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Image selected", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {

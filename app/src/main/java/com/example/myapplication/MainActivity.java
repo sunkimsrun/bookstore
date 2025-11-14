@@ -8,11 +8,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat; // Use this for compatibility
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         // 1. First, set the content view. This creates the views from your XML.
         setContentView(R.layout.activity_main);
@@ -33,8 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 5. Your existing code to navigate to the next screen after a delay.
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(this, StartScreen2Activity.class));
-            finish();
+            if (currentUser != null) {
+                startActivity(new Intent(this, HomeActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(this, StartScreen2Activity.class));
+                finish();
+            }
         }, 1500);
     }
 }

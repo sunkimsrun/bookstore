@@ -12,6 +12,58 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- NEW: Promotion Cards Section - HORIZONTAL -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/promotionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Special Promotions"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Horizontal ScrollView for promotion cards -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingEnd="10dp">
+
+                    <!-- Promotion Card 1: Back to School -->
+                    <include
+                        android:id="@+id/promotionCard1"
+                        layout="@layout/item_card"
+                        android:layout_width="320dp"
+                        android:layout_height="140dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <!-- Promotion Card 2: BAC II Vacation -->
+                    <include
+                        android:id="@+id/promotionCard2"
+                        layout="@layout/item_card"
+                        android:layout_width="320dp"
+                        android:layout_height="140dp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
         <!-- Section 1: Top Card -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,16 +72,6 @@
             android:orientation="vertical"
             android:layout_marginBottom="16dp">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginBottom="8dp"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
-
             <LinearLayout
                 android:id="@+id/swapButton"
                 android:layout_width="wrap_content"
@@ -37,7 +79,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/bg_blue"
+                    android:id="@+id/bg_blue_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -45,7 +87,7 @@
                     app:srcCompat="@drawable/blue_dot" />
 
                 <ImageView
-                    android:id="@+id/bg_dot2"
+                    android:id="@+id/bg_dot2_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -73,20 +115,101 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <HorizontalScrollView
                 android:id="@+id/viewPagerGenre"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:scrollbars="none"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/japaneseGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/japanese_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Japanese Genre" />
+
+                    <ImageButton
+                        android:id="@+id/comedyGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/comedy_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Comedy Genre" />
+
+                    <ImageButton
+                        android:id="@+id/mysteryGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/mystery_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Mystery Genre" />
+
+                    <ImageButton
+                        android:id="@+id/historicalGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/historical_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Historical Genre" />
+
+                    <ImageButton
+                        android:id="@+id/biographyGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/biography_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Biography Genre" />
+
+                    <ImageButton
+                        android:id="@+id/horrorGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:src="@drawable/horror_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Horror Genre" />
+
+                    <ImageButton
+                        android:id="@+id/fantasyGenre"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@null"
+                        android:src="@drawable/fantasy_genre"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Fantasy Genre" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+
         </LinearLayout>
 
         <!-- Section 3: Recommendation Books Card -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:orientation="vertical"
             android:layout_marginBottom="16dp">
 
@@ -94,7 +217,7 @@
                 android:id="@+id/recommend_book"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="Recommendation Books"
+                android:text="Popular Book"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -102,15 +225,17 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <!-- CHANGE ViewPager2 to RecyclerView for horizontal scrolling -->
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/viewPagerRecommendation"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="250dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp" />
 
+            <!-- Keep dot indicators for visual design (they just won't be functional) -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,49 +244,45 @@
                 android:layout_marginTop="8dp">
 
                 <ImageView
-                    android:id="@+id/bg_blue"
+                    android:id="@+id/bg_blue_recommendation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:contentDescription="todo"
                     app:srcCompat="@drawable/blue_dot" />
 
                 <ImageView
-                    android:id="@+id/bg_dot2"
+                    android:id="@+id/bg_dot2_recommendation1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:contentDescription="todo"
                     app:srcCompat="@drawable/gray_dot" />
 
                 <ImageView
-                    android:id="@+id/bg_dot2"
+                    android:id="@+id/bg_dot2_recommendation2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:contentDescription="todo"
                     app:srcCompat="@drawable/gray_dot" />
 
                 <ImageView
-                    android:id="@+id/bg_dot2"
+                    android:id="@+id/bg_dot2_recommendation3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:contentDescription="todo"
                     app:srcCompat="@drawable/gray_dot" />
 
                 <ImageView
-                    android:id="@+id/bg_dot2"
+                    android:id="@+id/bg_dot2_recommendation4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:contentDescription="todo"
                     app:srcCompat="@drawable/gray_dot" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- Section 4: All Book Card -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/latestCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -180,19 +301,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
 
                     <!-- Left half: Image -->
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/postImage"
                         android:layout_width="0dp"
                         android:layout_height="150dp"
+                        android:layout_marginEnd="12dp"
                         android:layout_weight="1"
                         android:scaleType="centerCrop"
                         android:src="@drawable/placeholder"
-                        app:shapeAppearanceOverlay="@style/RoundedImageView"
-                        android:layout_marginEnd="12dp" />
+                        app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
                     <!-- Right half: Content -->
                     <LinearLayout
@@ -205,31 +326,31 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
+                            android:layout_marginBottom="4dp"
                             android:gravity="start"
-                            android:layout_marginBottom="4dp">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/postTitle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Japanese tale"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"
+                                android:ellipsize="end"
                                 android:maxLines="2"
-                                android:ellipsize="end"/>
+                                android:text="Japanese tale"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/postPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
                                 android:text="5 $"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
                                 android:textColor="@android:color/holo_red_dark"
-                                android:layout_marginStart="8dp"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- Genre -->
@@ -237,71 +358,72 @@
                             android:id="@+id/postGenre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
                             android:text="Novel"
-                            android:textSize="14sp"
-                            android:textStyle="italic"
                             android:textColor="@android:color/holo_blue_dark"
-                            android:layout_marginBottom="4dp"/>
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
 
                         <!-- Description -->
                         <TextView
                             android:id="@+id/postInformation"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
-                            android:text="チヒロはおばあちゃんの家いえに今日きょうは1人ひとりで泊とまります。"
-                            android:textSize="11sp"
-                            android:maxLines="3"
                             android:ellipsize="end"
-                            android:layout_marginBottom="8dp"/>
+                            android:maxLines="3"
+                            android:text="チヒロはおばあちゃんの家いえに今日きょうは1人ひとりで泊とまります。"
+                            android:textSize="11sp" />
 
                         <!-- Date & Location - Location on left, Date on right -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <!-- Location on LEFT -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
+                                android:layout_marginEnd="16dp"
                                 android:gravity="center_vertical"
-                                android:layout_marginEnd="16dp">
+                                android:orientation="horizontal">
 
                                 <ImageView
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
-                                    android:src="@drawable/ico_calendar"/>
+                                    android:src="@drawable/ico_calendar" />
 
                                 <TextView
                                     android:id="@+id/date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
                                     android:text="Oct, 10 2025"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp"/>
+                                    android:textSize="12sp" />
                             </LinearLayout>
 
                             <!-- Date on RIGHT -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <ImageView
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
-                                    android:src="@drawable/ico_pin"/>
+                                    android:src="@drawable/ico_pin" />
 
                                 <TextView
+                                    android:id="@+id/postLocation"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
                                     android:text="RUPP"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp"/>
+                                    android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -311,11 +433,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@color/light_gray"
-                    android:padding="8dp"
                     android:layout_marginTop="8dp"
+                    android:background="@color/light_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
                     app:shapeAppearanceOverlay="@style/RoundedCorner">
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -329,9 +451,9 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/userName"
@@ -339,25 +461,28 @@
                             android:layout_height="wrap_content"
                             android:text="Sun Kimsrun"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/userPhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="011 880 778"
-                            android:textSize="11sp"/>
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View"
-                        android:textSize="28sp"
-                        android:textColor="@color/black"
+                        android:layout_marginStart="8dp"
                         android:backgroundTint="@color/light_blue"
-                        android:clickable="false"/>
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="View"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -383,11 +508,11 @@
             android:layout_height="65dp"
             android:layout_marginHorizontal="41.5dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="@color/light_blue"
             android:text="Create Book"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>
