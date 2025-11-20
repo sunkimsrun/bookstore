@@ -295,27 +295,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="10dp">
 
-                <!-- Top section: Image (left half) + Content (right half) -->
+                <!-- Top section: Image (portrait size) + Content -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
-                    <!-- Left half: Image -->
+                    <!-- Left: Portrait Image - FIXED DIMENSIONS -->
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/postImage"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
+                        android:layout_width="117dp"
+                        android:layout_height="180dp"
                         android:layout_marginEnd="12dp"
-                        android:layout_weight="1"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/placeholder"
-                        app:shapeAppearanceOverlay="@style/RoundedImageView" />
+                        android:src="@drawable/placeholder" />
 
-                    <!-- Right half: Content -->
+                    <!-- Right: Content - takes remaining space -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -368,26 +366,28 @@
                         <TextView
                             android:id="@+id/postInformation"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:lineHeight="20dp"
+                            android:layout_marginBottom="35dp"
+                            android:minHeight="60dp"
                             android:ellipsize="end"
-                            android:maxLines="3"
+                            android:maxLines="4"
                             android:text="チヒロはおばあちゃんの家いえに今日きょうは1人ひとりで泊とまります。"
                             android:textSize="11sp" />
 
-                        <!-- Date & Location - Location on left, Date on right -->
+                        <!-- Date & Location -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <!-- Location on LEFT -->
+                            <!-- Date -->
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -405,10 +405,11 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
 
-                            <!-- Date on RIGHT -->
+                            <!-- Location -->
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -429,15 +430,13 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- User Info - Full width at bottom -->
+                <!-- User Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:background="@color/light_gray"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="8dp"
                     app:shapeAppearanceOverlay="@style/RoundedCorner">
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -487,6 +486,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+
         <!-- Section 5: See More -->
         <TextView
             android:id="@+id/tvSkip"
@@ -495,7 +495,7 @@
             android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
             android:text="See more..."
-            android:textColor="@color/black"
+            android:textColor="@color/red"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText"

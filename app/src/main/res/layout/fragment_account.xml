@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,6 +39,7 @@
         android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
@@ -48,14 +48,18 @@
             android:layout_marginEnd="30dp">
 
             <View
-                android:layout_width="160dp"
-                android:layout_height="160dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:maxWidth="160dp"
+                android:maxHeight="160dp"
                 android:background="@drawable/user_pf_bg" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:maxWidth="150dp"
+                android:maxHeight="150dp"
                 android:scaleType="centerCrop"
                 android:translationX="5dp"
                 android:translationY="5dp"
@@ -63,8 +67,8 @@
 
             <ImageView
                 android:id="@+id/editIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignEnd="@id/profile_image"
                 android:layout_alignBottom="@id/profile_image"
                 android:contentDescription="click_for_image"
@@ -77,8 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/nameText"
@@ -93,9 +97,9 @@
                 android:id="@+id/gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/icon_gender"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:text="Gender"
                 tools:ignore="HardcodedText,UseCompatTextViewDrawableXml"
@@ -107,9 +111,9 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/ico_mail"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="Email"
@@ -122,9 +126,9 @@
                 android:id="@+id/phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/ico_phone"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:text="Phone Number"
                 android:textColor="#A9A9A9"
@@ -134,10 +138,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button2"
-                android:layout_width="102dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_gravity="end"
+                android:minWidth="102dp"
+                android:minHeight="32dp"
                 android:background="@drawable/btn_edit"
                 android:text="Edit"
                 android:textColor="@color/black"
@@ -152,8 +158,8 @@
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +169,9 @@
         android:id="@+id/liked_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider">
@@ -176,13 +184,13 @@
             android:text="Liked"
             android:background="@drawable/btn_like"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:drawableEnd="@drawable/ic_heart"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp" />
 
     </RelativeLayout>
 
@@ -198,11 +206,12 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:maxWidth="250dp"
+            android:maxHeight="250dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/empty" />
@@ -215,7 +224,7 @@
             android:text="Empty!!"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText"/>
 
@@ -225,7 +234,7 @@
         android:id="@+id/rcv_list_post"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -14,27 +14,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="10dp">
 
-        <!-- Top section: Image (left half) + Content (right half) -->
+        <!-- Top section: Image (portrait size) + Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
-            <!-- Left half: Image -->
+            <!-- Left: Portrait Image -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/postImage"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_width="117dp"
+                android:layout_height="180dp"
                 android:layout_marginEnd="12dp"
-                android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"
-                app:shapeAppearanceOverlay="@style/RoundedImageView" />
+                android:src="@drawable/placeholder"/>
 
-            <!-- Right half: Content -->
+            <!-- Right: Content - takes remaining space -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -87,11 +85,13 @@
                 <TextView
                     android:id="@+id/postInformation"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:lineHeight="20dp"
+                    android:layout_marginBottom="35dp"
+                    android:minHeight="60dp"
                     android:ellipsize="end"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:text="チヒロはおばあちゃんの家いえに今日きょうは1人ひとりで泊とまります。"
                     android:textSize="11sp" />
 
@@ -153,11 +153,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@color/light_gray"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="8dp"
             app:shapeAppearanceOverlay="@style/RoundedCorner">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -191,7 +189,7 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- CHANGED: Made checkbox clickable and focusable -->
+            <!-- View Button -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"

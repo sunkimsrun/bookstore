@@ -15,7 +15,7 @@
     <style name="information">
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">0.07</item>
-        <item name="android:textColor">#1500FF</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Style : Post Items Image -->

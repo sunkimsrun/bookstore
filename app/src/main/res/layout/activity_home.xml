@@ -14,7 +14,8 @@
         <RelativeLayout
             android:id="@+id/headerLayout"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
             android:background="@drawable/bg_header"
             android:elevation="3dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,22 +24,26 @@
 
             <ImageButton
                 android:id="@+id/btnHamburger"
-                android:layout_width="32dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="10dp"
+                android:minWidth="32dp"
+                android:minHeight="32dp"
                 android:background="@android:color/transparent"
-                android:paddingTop="25dp"
+                android:padding="16dp"
                 android:src="@drawable/ico_hamburger_menu"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <ImageView
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:maxWidth="100dp"
                 android:contentDescription="logo"
-                android:paddingTop="25dp"
+                android:padding="16dp"
                 android:src="@drawable/logo"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
@@ -47,27 +52,30 @@
             android:id="@+id/frameContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="-20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@id/headerLayout" />
 
         <RelativeLayout
             android:id="@+id/loadingBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="#80000000"
             android:elevation="26dp"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:maxHeight="300dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/loading" />

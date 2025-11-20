@@ -8,19 +8,12 @@
     tools:context=".fragment.AllBookFragment"
     tools:ignore="Overdraw">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+        <!-- Search Section -->
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
@@ -35,22 +28,22 @@
             android:hint="Search Book"
             android:inputType="text"
             android:paddingHorizontal="10dp"
+            android:paddingVertical="12dp"
             android:textColorHint="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText" />
 
+        <!-- Filter Chips -->
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText">
 
@@ -61,7 +54,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
-                app:chipSpacing="4dp"
+                app:chipSpacing="8dp"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
@@ -104,7 +97,6 @@
                     android:text="Historical"
                     tools:ignore="HardcodedText,KeyboardInaccessibleWidget" />
 
-
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_biography"
                     style="@style/CustomChipStyle"
@@ -142,14 +134,13 @@
                     android:layout_height="wrap_content"
                     android:text="clear filter" />
 
-
             </com.google.android.material.chip.ChipGroup>
-
         </HorizontalScrollView>
 
+        <!-- Empty State - This should be GONE when there are books -->
         <RelativeLayout
             android:id="@+id/noFound"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -173,30 +164,25 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lottieView"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
                 android:text="No Book Post Today"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textColor="@color/red"
+                android:textSize="29sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
-
         </RelativeLayout>
 
-
+        <!-- Books List - This should be VISIBLE when there are books -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_list_post"
-            android:layout_width="411dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="1.5dp"
-            android:contentDescription=""
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </FrameLayout>

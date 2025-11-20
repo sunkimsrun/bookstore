@@ -97,6 +97,7 @@ public class PromotionScreenFragment extends Fragment {
         Log.d("PromotionScreen", "RecyclerView setup completed");
     }
 
+//    change in 20-11-2025
     private void setupAdapterClickListener() {
         adapter.setOnItemClickListener(new PostCardLikeAdapter.OnItemClickListener() {
             @Override
@@ -106,11 +107,8 @@ public class PromotionScreenFragment extends Fragment {
 
             @Override
             public void onLikeButtonClick(PostCard postCard) {
-                // Navigate to AccountFragment when like button is clicked
-                if (getActivity() instanceof HomeActivity) {
-                    ((HomeActivity) getActivity()).binding.navigationView.setCheckedItem(R.id.nav_account);
-                    ((HomeActivity) getActivity()).LoadFragment(new AccountFragment());
-                }
+                // ✅ CORRECT: Navigate to PostDetailFragment like other fragments
+                openBookDetails(postCard);
             }
         });
     }

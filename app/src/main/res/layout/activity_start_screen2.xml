@@ -10,8 +10,8 @@
     <!-- Background Image fills the whole screen -->
     <ImageView
         android:id="@+id/background_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/bg_image_screen2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,105 +20,114 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Decorative Vector at the top -->
-
-    <!-- Logo -->
-
     <ImageView
         android:id="@+id/vector_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/logoImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="183dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:elevation="5dp"
+        android:scaleType="fitStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintDimensionRatio="183:144"
         app:srcCompat="@drawable/vector_screen2" />
 
-    <!-- Title -->
-
-    <!-- Subtitle -->
-
-    <!-- Bottom Decorative Shape -->
-
+    <!-- Logo -->
     <ImageView
         android:id="@+id/logoImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="248dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.537"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/appTitle"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/logo" />
 
+    <!-- App Title -->
     <TextView
         android:id="@+id/appTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
         android:text="BookLab"
         android:textColor="@android:color/black"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_rect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logoImage"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/bottom_rect" />
 
+    <!-- Bottom Decorative Shape -->
+    <ImageView
+        android:id="@+id/bottom_rect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/rectangle_screen1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.3" />
+
+    <!-- Choose Language Text -->
     <TextView
         android:id="@+id/chooseLanguage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
         android:fontFamily="@font/kavivanar"
         android:text="Choose Your Language"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/selectedEnglish"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottom_rect"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/bottom_rect"
-        android:layout_width="0dp"
-        android:layout_height="230dp"
-        android:src="@drawable/rectangle_screen1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/bottom_rect" />
 
     <!-- Language Selection Box -->
     <RelativeLayout
         android:id="@+id/selectedEnglish"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="50dp"
+        android:minHeight="70dp"
         android:background="@drawable/bg_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chooseLanguage">
 
         <ImageView
             android:id="@+id/flagIcon"
             android:layout_width="40dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/netherlandmap" />
 
         <TextView
             android:id="@+id/languageName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/flagIcon"
-            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/flagIcon"
             android:text="English"
             android:textColor="@android:color/black"
@@ -130,7 +139,7 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/arrow_right_black" />
     </RelativeLayout>
 

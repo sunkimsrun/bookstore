@@ -20,7 +20,7 @@
             android:id="@+id/lottieView"
             android:layout_width="350dp"
             android:layout_height="350dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/success" />
@@ -42,9 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="650dp"
+        android:layout_marginTop="700dp"
         android:text="Back!!"
-        android:textSize="18sp"
+        android:textSize="27sp"
         android:textColor="@color/red"
         android:textStyle="bold" />
 

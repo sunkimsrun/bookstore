@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.adapter.PostCardAdapter;
+import com.example.myapplication.adapter.PostCardLikeAdapter;
 import com.example.myapplication.databinding.FragmentAccountBinding;
 import com.example.myapplication.model.PostCard;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +49,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
-    private PostCardAdapter adapter;
+    private PostCardLikeAdapter adapter;
     private Uri imageUri;
     private HomeActivity homeActivity;
     private String userIdToUse;
@@ -165,14 +165,15 @@ public class AccountFragment extends Fragment {
     }
 
     private void setupAdapterClickListener() {
-        adapter.setOnItemClickListener(new PostCardAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new PostCardLikeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(PostCard postCard) {
                 openBookDetails(postCard);
             }
 
             @Override
-            public void onCheckboxClick(PostCard postCard) {
+            public void onLikeButtonClick(PostCard postCard) {
+                // Navigate to PostDetailFragment when like button is clicked
                 openBookDetails(postCard);
             }
         });
@@ -273,7 +274,8 @@ public class AccountFragment extends Fragment {
         RecyclerView recyclerView = binding.rcvListPost;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        adapter = new PostCardAdapter(userIdToUse);
+        // Use PostCardLikeAdapter instead of PostCardAdapter
+        adapter = new PostCardLikeAdapter(userIdToUse);
         recyclerView.setAdapter(adapter);
     }
 

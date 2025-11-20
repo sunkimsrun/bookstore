@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.adapter.PostCardAdapter;
+import com.example.myapplication.adapter.PostCardLikeAdapter;
 import com.example.myapplication.model.PostCard;
 import com.example.myapplication.repository.IApiCallback;
 import com.example.myapplication.repository.PostCardRepository;
@@ -38,7 +38,7 @@ public class AllBookFragment extends Fragment {
 
     private final List<PostCard> fullPostList = new ArrayList<>();
     private final List<PostCard> filteredList = new ArrayList<>();
-    private PostCardAdapter adapter;
+    private PostCardLikeAdapter adapter;
     private PostCardRepository postCardRepository;
 
     private View noFoundLayout;
@@ -73,8 +73,8 @@ public class AllBookFragment extends Fragment {
         noFoundLayout = view.findViewById(R.id.noFound);
         noFoundLayout.setVisibility(View.GONE);
 
-        // Use PostCardAdapter for AllBookFragment (without like button)
-        adapter = new PostCardAdapter(currentUserId);
+        // Use PostCardLikeAdapter instead of PostCardAdapter
+        adapter = new PostCardLikeAdapter(currentUserId);
         recyclerView.setAdapter(adapter);
 
         setupAdapterClickListener();
@@ -134,14 +134,15 @@ public class AllBookFragment extends Fragment {
     }
 
     private void setupAdapterClickListener() {
-        adapter.setOnItemClickListener(new PostCardAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new PostCardLikeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(PostCard postCard) {
                 openBookDetails(postCard);
             }
 
             @Override
-            public void onCheckboxClick(PostCard postCard) {
+            public void onLikeButtonClick(PostCard postCard) {
+                // Navigate to PostDetailFragment when like button is clicked
                 openBookDetails(postCard);
             }
         });
