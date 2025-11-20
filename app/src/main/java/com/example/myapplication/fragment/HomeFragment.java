@@ -1,8 +1,10 @@
 package com.example.myapplication.fragment;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +105,7 @@ public class HomeFragment extends Fragment {
             }
 
             try {
-                lottieAnimation1.setAnimation(R.raw.books_animation);
+                lottieAnimation1.setAnimation(R.raw.books_animation2);
                 lottieAnimation1.playAnimation();
             } catch (Exception e) {
                 Log.d("HomeFragment", "No Lottie animation found for Back to School card");
@@ -218,14 +220,34 @@ public class HomeFragment extends Fragment {
             MaterialButton goButton = topCard.findViewById(R.id.goButton);
             LottieAnimationView lottieAnimation = topCard.findViewById(R.id.lottieAnimation);
 
-            titleText.setText("Book Store");
-            subText.setText("Discover amazing books\nfrom various genres");
+            titleText.setText("Back to School");
+            subText.setText("Discover books\nfrom various genres");
 
             try {
+                // Set first animation
                 lottieAnimation.setAnimation(R.raw.books_animation);
+                long duration = lottieAnimation.getDuration();
+                Log.d("HomeFragment", "First animation duration: " + duration);
                 lottieAnimation.playAnimation();
+
+                // If duration is 0, set a default (1 second)
+                if (duration == 0) {
+                    duration = 1000;
+                }
+
+                // Switch to second animation after the duration of the first
+                new Handler().postDelayed(() -> {
+                    try {
+                        lottieAnimation.setAnimation(R.raw.books_animation2);
+                        lottieAnimation.playAnimation();
+                        Log.d("HomeFragment", "Second animation started");
+                    } catch (Exception e) {
+                        Log.d("HomeFragment", "Second Lottie animation not found", e);
+                    }
+                }, duration);
+
             } catch (Exception e) {
-                Log.d("HomeFragment", "No Lottie animation found");
+                Log.d("HomeFragment", "First Lottie animation not found", e);
             }
 
             goButton.setOnClickListener(v -> {
@@ -255,7 +277,7 @@ public class HomeFragment extends Fragment {
         serviceHelper.getTop5MostLikedBooks(new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> likedBooks) {
-                binding.recommendBook.setText("Most Liked Books");
+                binding.recommendBook.setText("Recommended Books");
                 recommendedAdapter.setPostCards(likedBooks);
                 Log.d("HomeFragment", "Loaded " + likedBooks.size() + " most liked books");
 
@@ -408,7 +430,7 @@ public class HomeFragment extends Fragment {
         // Find the checkbox in the latest card and set text
         Chip checkbox = binding.latestCard.findViewById(R.id.checkbox);
         if (checkbox != null) {
-            checkbox.setText("View Details");
+            checkbox.setText("View Book");
         }
 
         loadUserData(book.getUserId(), requireContext());
@@ -471,6 +493,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+//    កន្លែងនេះ បើចង់កែអោយuser ដទៃមិនបាច់login ក៏អាចមើលuser ផ្សេងក៏បានត្រូវកែ code + rule ក្នុងfirebase
     private void loadUserData(String userId, Context context) {
         if (userId == null) {
             // Use proper binding references

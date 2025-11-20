@@ -70,11 +70,12 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
         holder.binding.postInformation.setText(post.getInformation() != null ? post.getInformation() : "No description available");
         holder.binding.date.setText(post.getDate() != null ? post.getDate() : "No date");
 
-        // Set phone if available
+        // Set phone from post data FIRST (this will be overridden by user data if available)
         if (post.getPhone() != null && !post.getPhone().isEmpty()) {
-            holder.binding.phone.setText(post.getPhone());
+            holder.binding.userPhone.setText(post.getPhone());
+            Log.d("PostCardLikeAdapter", "Post phone set: " + post.getPhone());
         } else {
-            holder.binding.phone.setText("No phone");
+            holder.binding.userPhone.setText("No phone");
         }
 
         // Set price if available
@@ -121,10 +122,65 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
             }
         });
 
-        // Set click listener for the like button
+        // Load user data - this will override the phone if user data has phone
+        if (post.getUserId() != null) {
+            loadUserData(holder.binding, post.getUserId(), holder.itemView.getContext());
+        } else {
+            setDefaultUserData(holder.binding);
+        }
+
+        // Set click listener for the like button - only like functionality
         holder.binding.likeButton.setOnClickListener(view -> {
-            // This is handled in setupLikeButton method
-            // We don't need to call onLikeButtonClick here as it's already handled in the like toggle logic
+            // First navigate to PostDetailFragment
+            if (onItemClickListener != null) {
+                onItemClickListener.onLikeButtonClick(post);
+            }
+
+            // Then handle the like functionality only (no unlike)
+            handleLikeButtonClick(holder.binding, post);
+        });
+    }
+
+    private void handleLikeButtonClick(PostCardLikeBinding binding, PostCard post) {
+        if (currentUserId == null) {
+            Toast.makeText(binding.getRoot().getContext(), "Please log in to like books", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (post.getPostId() == null) {
+            Toast.makeText(binding.getRoot().getContext(), "Cannot like this book", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference likedRef = firebaseDatabase.getReference("Users")
+                .child(currentUserId)
+                .child("likedBooks")
+                .child(post.getPostId());
+
+        // Check if already liked
+        likedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    // Only like if not already liked
+                    likedRef.setValue(post)
+                            .addOnSuccessListener(aVoid -> {
+                                updateLikeButtonAppearance(binding, true);
+                                Toast.makeText(binding.getRoot().getContext(), "Added to liked books", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(binding.getRoot().getContext(), "Failed to like book", Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    // Already liked - just show message
+                    Toast.makeText(binding.getRoot().getContext(), "Book already in your liked books", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(binding.getRoot().getContext(), "Failed to check like status", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -152,56 +208,6 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
                 Log.e("PostCardLikeAdapter", "Error checking like status: " + error.getMessage());
             }
         });
-
-        // Set like button click listener
-        binding.likeButton.setOnClickListener(v -> {
-            if (currentUserId == null) {
-                Toast.makeText(binding.getRoot().getContext(), "Please log in to like books", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (post.getPostId() == null) {
-                Toast.makeText(binding.getRoot().getContext(), "Cannot like this book", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            likedRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Unlike the book - remove from likedBooks
-                        likedRef.removeValue()
-                                .addOnSuccessListener(aVoid -> {
-                                    updateLikeButtonAppearance(binding, false);
-                                    Toast.makeText(binding.getRoot().getContext(), "Removed from liked books", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(binding.getRoot().getContext(), "Failed to remove like", Toast.LENGTH_SHORT).show();
-                                });
-                    } else {
-                        // Like the book - store the complete book data in likedBooks
-                        likedRef.setValue(post)
-                                .addOnSuccessListener(aVoid -> {
-                                    updateLikeButtonAppearance(binding, true);
-                                    Toast.makeText(binding.getRoot().getContext(), "Added to liked books", Toast.LENGTH_SHORT).show();
-
-                                    // Call the like button click listener to navigate to AccountFragment
-                                    if (onItemClickListener != null) {
-                                        onItemClickListener.onLikeButtonClick(post);
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(binding.getRoot().getContext(), "Failed to like book", Toast.LENGTH_SHORT).show();
-                                });
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(binding.getRoot().getContext(), "Failed to update like", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
     }
 
     private void updateLikeButtonAppearance(PostCardLikeBinding binding, boolean isLiked) {
@@ -209,10 +215,12 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
             binding.likeButton.setIconResource(R.drawable.ic_heart_filled);
             binding.likeButton.setText("Liked");
             binding.likeButton.setBackgroundTintList(ContextCompat.getColorStateList(binding.getRoot().getContext(), R.color.light_blue));
+            binding.likeButton.setEnabled(false); // Disable button when already liked
         } else {
             binding.likeButton.setIconResource(R.drawable.ic_heart);
             binding.likeButton.setText("Like");
             binding.likeButton.setBackgroundTintList(ContextCompat.getColorStateList(binding.getRoot().getContext(), R.color.light_blue2));
+            binding.likeButton.setEnabled(true); // Enable button when not liked
         }
     }
 
@@ -231,16 +239,28 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
                 if (snapshot.exists()) {
                     String username = snapshot.child("username").getValue(String.class);
                     String profileImageUrl = snapshot.child("profileImageUrl").getValue(String.class);
+
+                    // Try multiple possible phone field names
                     String phone = snapshot.child("phone").getValue(String.class);
+                    if (phone == null || phone.isEmpty()) {
+                        phone = snapshot.child("phoneNumber").getValue(String.class);
+                    }
+                    if (phone == null || phone.isEmpty()) {
+                        phone = snapshot.child("userPhone").getValue(String.class);
+                    }
+
+                    Log.d("PostCardLikeAdapter", "User data - Username: " + username + ", Phone: " + phone);
 
                     // Set username
                     binding.userName.setText(username != null ? username : "Book Seller");
 
                     // Set phone if available
                     if (phone != null && !phone.isEmpty()) {
-                        binding.phone.setText(phone);
+                        binding.userPhone.setText(phone);
+                        Log.d("PostCardLikeAdapter", "User phone set to: " + phone);
                     } else {
-                        binding.phone.setText("No phone");
+                        binding.userPhone.setText("No phone");
+                        Log.d("PostCardLikeAdapter", "No phone found for user");
                     }
 
                     // Load profile image
@@ -251,16 +271,20 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
                                 .error(R.drawable.placeholder)
                                 .centerCrop()
                                 .into(binding.userImage);
+                        Log.d("PostCardLikeAdapter", "User image loaded: " + profileImageUrl);
                     } else {
                         binding.userImage.setImageResource(R.drawable.placeholder);
+                        Log.d("PostCardLikeAdapter", "Using placeholder user image");
                     }
                 } else {
+                    Log.e("PostCardLikeAdapter", "User data not found for ID: " + userId);
                     setDefaultUserData(binding);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("PostCardLikeAdapter", "Error loading user data: " + error.getMessage());
                 setDefaultUserData(binding);
             }
         });
@@ -268,8 +292,9 @@ public class PostCardLikeAdapter extends RecyclerView.Adapter<PostCardLikeAdapte
 
     private void setDefaultUserData(PostCardLikeBinding binding) {
         binding.userName.setText("Book Seller");
-        binding.phone.setText("No phone");
+        binding.userPhone.setText("No phone");
         binding.userImage.setImageResource(R.drawable.placeholder);
+        Log.d("PostCardLikeAdapter", "Default user data set");
     }
 
     @Override

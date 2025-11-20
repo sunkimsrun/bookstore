@@ -6,23 +6,11 @@
     android:id="@+id/main"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/vector_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/vector_screen2" />
-
-    <!-- Background Image fills the whole screen -->
+    <!-- Background Image -->
     <ImageView
         android:id="@+id/background_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/bg_login"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,134 +18,157 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Vector Image - Aligned to Left -->
+    <ImageView
+        android:id="@+id/vector_image"
+        android:layout_width="183dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:elevation="5dp"
+        android:scaleType="fitStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintDimensionRatio="183:144"
+        app:srcCompat="@drawable/vector_screen2" />
+
+    <!-- Skip Button -->
     <TextView
         android:id="@+id/tvSkipForNow"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="46dp"
         android:layout_marginTop="88dp"
         android:layout_marginEnd="46dp"
-        android:textStyle="bold"
         android:text="Skip for now!"
         android:textAlignment="textEnd"
         android:textColor="#1E1E1E"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
+    <!-- Welcome Text -->
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="46dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="46dp"
-        android:textStyle="bold"
+        android:fontFamily="serif"
         android:gravity="center"
         android:text="@string/welcome_text"
         android:textColor="#1E1E1E"
-        android:fontFamily="serif"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSkipForNow"
+        app:layout_constraintTop_toBottomOf="@+id/tvSkipForNow"
         tools:ignore="HardcodedText" />
 
+    <!-- Email Field -->
     <EditText
         android:id="@+id/et_email"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="41dp"
         android:layout_marginStart="46dp"
+        android:layout_marginTop="41dp"
         android:layout_marginEnd="46dp"
         android:autofillHints="username"
-        android:inputType="textEmailAddress"
         android:background="@drawable/bg_gray_rectangle"
-        android:drawableStart="@drawable/ico_mail"
         android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ico_mail"
         android:hint="Email"
+        android:inputType="textEmailAddress"
         android:maxLines="1"
         android:paddingHorizontal="10dp"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/textView7"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
         tools:ignore="HardcodedText" />
 
+    <!-- Password Field -->
     <EditText
         android:id="@+id/et_password"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="46dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="46dp"
         android:autofillHints="username"
         android:background="@drawable/bg_gray_rectangle"
+        android:drawablePadding="10dp"
         android:drawableStart="@drawable/ico_lock"
         android:drawableEnd="@drawable/ico_eye_open"
-        android:drawablePadding="10dp"
+        android:hint="Password"
         android:inputType="textPassword"
         android:maxLines="1"
-        android:hint="Password"
         android:paddingHorizontal="10dp"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/et_email"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_email"
         tools:ignore="HardcodedText" />
 
+    <!-- Forget Password -->
     <TextView
         android:id="@+id/tvForgetPassword"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginStart="46dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="46dp"
-        android:textStyle="bold"
         android:text="Forget password?"
         android:textAlignment="textEnd"
         android:textColor="@color/blue"
         android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password"
         tools:ignore="HardcodedText" />
 
+    <!-- Login Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogIn"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="65dp"
-        android:layout_marginTop="41dp"
         android:layout_marginStart="46dp"
+        android:layout_marginTop="41dp"
         android:layout_marginEnd="46dp"
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:backgroundTint="@color/light_blue2"
         app:cornerRadius="30dp"
-        app:layout_constraintTop_toBottomOf="@id/tvForgetPassword"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvForgetPassword"
         tools:ignore="HardcodedText" />
 
+    <!-- Or Continue With -->
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
         android:layout_marginTop="41dp"
+        android:layout_marginEnd="46dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/btnLogIn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/btnLogIn">
 
         <View
-            android:layout_width="112dp"
+            android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_weight="1"
             android:background="@drawable/didver_line" />
 
         <TextView
@@ -171,23 +182,25 @@
             tools:ignore="HardcodedText, TextContrastCheck" />
 
         <View
-            android:layout_width="112dp"
+            android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_weight="1"
             android:background="@drawable/didver_line" />
     </LinearLayout>
 
+    <!-- Social Login -->
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
         android:layout_marginTop="35dp"
+        android:layout_marginEnd="46dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginStart="46dp"
-        android:layout_marginEnd="46dp"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <ImageButton
             android:id="@+id/btnGoLogin"
@@ -199,22 +212,26 @@
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
+    <!-- Register Text -->
     <TextView
         android:id="@+id/tvRegister"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="46dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="46dp"
-        android:textStyle="bold"
+        android:layout_marginBottom="40dp"
         android:text="@string/activity_Login_Dont_Have_Account_Yet_Register"
         android:textAlignment="center"
         android:textColor="#1E1E1E"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout4"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
+    <!-- Loading Overlay -->
     <RelativeLayout
         android:id="@+id/loadingBar"
         android:layout_width="match_parent"
@@ -222,7 +239,11 @@
         android:background="#80000000"
         android:elevation="26dp"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="wrap_content"

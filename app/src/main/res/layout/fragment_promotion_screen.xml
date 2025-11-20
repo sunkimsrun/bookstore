@@ -10,23 +10,25 @@
     <!-- Header Section -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="135dp">
+        android:layout_height="wrap_content"
+        android:minHeight="135dp">
 
-        <!-- Yellow Background -->
+        <!-- Yellow Background - Responsive Vector -->
         <ImageView
             android:id="@+id/header_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/promotion_bg"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitXY"
+            android:src="@drawable/promotion_bg" />
 
         <!-- Text Inside Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
-            android:paddingTop="20dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp"
             android:gravity="start|center_vertical">
 
             <TextView
@@ -49,7 +51,7 @@
         </LinearLayout>
     </FrameLayout>
 
-    <!-- RecyclerView - FIXED: Proper height with weight -->
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/promotion_post"
         android:layout_width="match_parent"

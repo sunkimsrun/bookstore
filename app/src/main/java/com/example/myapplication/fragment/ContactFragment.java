@@ -96,16 +96,17 @@ public class ContactFragment extends Fragment {
         view.setVisibility(visibility);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        sliderHandler.removeCallbacksAndMessages(null);
+    }
 
-
-
-
-
-//    ក្រោមនេះជា ការបង្ហាញពី Location, Phone, Email
+    //    ក្រោមនេះជា ការបង្ហាញពី Location, Phone, Email
 
     private static final String MAP_LOCATION_URI = "https://maps.app.goo.gl/zFmuSFf5TUCyji3Y8";
     private static final String CONTACT_PHONE_URI = "tel:+85511880778";
-    private static final String CONTACT_EMAIL_URI = "kim@gmail.com";
+    private static final String CONTACT_EMAIL_URI = "mailto:kim@gmail.com";
 
 
     private void openMap() {

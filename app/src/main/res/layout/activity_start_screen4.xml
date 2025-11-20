@@ -10,126 +10,131 @@
     <!-- Background Image -->
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="400dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/find_best_b"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/start_screen4" />
 
-
+    <!-- Page indicator -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
         android:text="2/2"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Title -->
     <TextView
         android:id="@+id/find_best_b"
-        android:layout_width="412dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/lacquer_regular"
         android:gravity="center"
         android:text="Explore"
         android:textColor="@color/red"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
+    <!-- Description -->
     <TextView
         android:id="@+id/every_book_"
-        android:layout_width="360dp"
-        android:layout_height="138dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="63dp"
-        android:gravity="center_horizontal|top"
-        android:lineSpacingExtra="17sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:lineSpacingExtra="8sp"
         android:text="Every book is a new adventure waiting to be explored. Within its pages lie uncharted worlds, untold stories, and unseen dreams."
         android:textColor="#615D5E"
         android:textSize="16sp"
-        android:translationY="-8.55sp"
-        app:layout_constraintBottom_toTopOf="@+id/next_page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/find_best_b" />
+        app:layout_constraintTop_toBottomOf="@+id/find_best_b" />
 
+    <!-- Bottom navigation container -->
     <RelativeLayout
         android:id="@+id/next_page"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginBottom="100dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="50dp"
+        android:minHeight="70dp"
         android:background="@drawable/rectangle_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/find_best_b"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/every_book_">
 
+        <!-- Prev button -->
         <TextView
             android:id="@+id/prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginBottom="13dp"
-            android:gravity="center_horizontal|top"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="24dp"
             android:text="Prev"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
-        <View
-            android:id="@+id/ellipse_1"
-            android:layout_width="12dp"
-            android:layout_height="13dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginBottom="30dp"
-            android:background="#7C7777" />
+        <!-- Page indicator dots -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <View
-            android:id="@+id/ellipse_2"
-            android:layout_width="12dp"
-            android:layout_height="13dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginBottom="30dp"
-            android:background="#009DFF" />
+            <View
+                android:id="@+id/ellipse_1"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="#7C7777"
+                android:backgroundTint="#7C7777" />
 
+            <View
+                android:id="@+id/ellipse_2"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="#009DFF"
+                android:backgroundTint="#009DFF" />
+        </LinearLayout>
+
+        <!-- Next button -->
         <Button
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginBottom="14dp"
+            android:layout_centerVertical="true"
             android:backgroundTint="@color/light_blue2"
             android:drawableEnd="@drawable/outline_arrow_forward_24"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:minHeight="48dp"
             android:text="Started"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </RelativeLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

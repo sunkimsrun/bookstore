@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_privacy_policy"
-    android:padding="20dp"
     tools:context=".fragment.PrivacyPolicyFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="none"
+        android:padding="20dp"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -26,8 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="-20dp"
-                android:backgroundTint="@android:color/white">
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@android:color/white"
+                app:cardElevation="8dp">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -54,15 +55,15 @@
 
                         <!-- Title -->
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:fontFamily="sans-serif-medium"
                             android:gravity="center"
+                            android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.04"
                             android:text="BookLab Privacy Policy!"
-                            android:textColor="@color/red"
+                            android:textColor="@color/black"
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
@@ -73,26 +74,25 @@
                             android:layout_marginBottom="18dp"
                             android:background="#DADADA" />
 
-                        <!-- Illustration -->
-
+                        <!-- Privacy Policy Content -->
                         <TextView
                             android:id="@+id/booklab_pri"
-                            android:layout_width="300dp"
-                            android:layout_height="148dp"
-                            android:gravity="center_horizontal|center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:lineSpacingExtra="8sp"
                             android:text="@string/booklab_pri"
-                            android:textAppearance="@style/booklab_pri" />
+                            android:textAppearance="@style/booklab_pri"
+                            android:layout_marginBottom="16dp" />
 
                         <TextView
                             android:id="@+id/information"
-                            android:layout_width="300dp"
-                            android:layout_height="960dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="@string/information"
                             android:textAppearance="@style/information"
                             android:lineSpacingExtra="5sp"
-                            android:gravity="center_vertical"
-                            />
+                            android:gravity="start" />
 
                     </LinearLayout>
 

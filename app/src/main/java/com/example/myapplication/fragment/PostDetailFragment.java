@@ -339,7 +339,7 @@ public class PostDetailFragment extends Fragment implements OnMapReadyCallback {
         if (googleMap != null) {
             LatLng rupp = new LatLng(11.5682157, 104.8899682);
             googleMap.clear();
-            googleMap.addMarker(new MarkerOptions().position(rupp).title("Royal University of Phnom Penh"));
+            googleMap.addMarker(new MarkerOptions().position(rupp).title("RUPP"));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(rupp, 14f));
         }
     }
