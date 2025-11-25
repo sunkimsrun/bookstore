@@ -1,5 +1,6 @@
 package com.example.myapplication.adapter;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ public class PostCardRecommendationAdapter extends RecyclerView.Adapter<PostCard
 
     private List<PostCard> postCards;
     private OnItemClickListener onItemClickListener;
+    private final Handler sliderHandler = new Handler();
+    private boolean isAutoSliding = false;
+    private int currentPosition = 0;
 
     public PostCardRecommendationAdapter() {
         this.postCards = new ArrayList<>();
@@ -77,6 +81,70 @@ public class PostCardRecommendationAdapter extends RecyclerView.Adapter<PostCard
     public void setPostCards(List<PostCard> postCards) {
         this.postCards = postCards != null ? postCards : new ArrayList<>();
         notifyDataSetChanged();
+
+        // Start auto-slide when data is set and there are multiple items
+        if (postCards != null && postCards.size() > 1) {
+            startAutoSlide();
+        }
+    }
+
+    private void startAutoSlide() {
+        if (isAutoSliding) return;
+
+        isAutoSliding = true;
+        sliderHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (postCards.size() > 1) {
+                    showNextCard();
+                    sliderHandler.postDelayed(this, 3000); // 3 seconds interval
+                }
+            }
+        }, 3000);
+    }
+
+    private void showNextCard() {
+        if (postCards.isEmpty()) return;
+
+        currentPosition = (currentPosition + 1) % postCards.size();
+
+        // This will trigger the RecyclerView to smoothly scroll to the next position
+        if (getRecyclerView() != null) {
+            getRecyclerView().smoothScrollToPosition(currentPosition);
+        }
+    }
+
+    // Helper method to get the RecyclerView this adapter is attached to
+    private RecyclerView getRecyclerView() {
+        // This is a simplified approach - in a real scenario, you might want to pass the RecyclerView reference
+        return null; // You'll need to implement this based on your setup
+    }
+
+    public void stopAutoSlide() {
+        isAutoSliding = false;
+        sliderHandler.removeCallbacksAndMessages(null);
+    }
+
+    public void resumeAutoSlide() {
+        if (postCards != null && postCards.size() > 1 && !isAutoSliding) {
+            startAutoSlide();
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        // Start auto-slide when attached to RecyclerView
+        if (postCards != null && postCards.size() > 1) {
+            startAutoSlide();
+        }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        // Stop auto-slide when detached to prevent memory leaks
+        stopAutoSlide();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

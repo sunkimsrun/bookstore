@@ -50,7 +50,13 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
     private HomeActivity homeActivity;
     private PostCardRecommendationAdapter recommendedAdapter;
-    private PostCard currentLatestBook;
+    private PostCard currentLatestBook1, currentLatestBook2, currentLatestBook3;
+
+    // Auto-slide variables
+    private Handler sliderHandler = new Handler();
+    private boolean isAutoSliding = false;
+    private int currentPosition = 0;
+    private static final long SLIDE_INTERVAL = 3000; // 3 seconds
 
     // Genre buttons
     private ImageButton btnJapanese, btnComedy, btnMystery, btnHistorical, btnBiography, btnHorror, btnFantasy;
@@ -81,7 +87,7 @@ public class HomeFragment extends Fragment {
         setupGenreButtons();
         setupRecommendedBooks();
         setupTopUsers();
-        setupLatestBook();
+        setupLatestBooks();
         setupClickListeners();
     }
 
@@ -89,7 +95,7 @@ public class HomeFragment extends Fragment {
         View promotionCard1 = binding.getRoot().findViewById(R.id.promotionCard1);
         View promotionCard2 = binding.getRoot().findViewById(R.id.promotionCard2);
 
-        // Setup Back to School Card
+        // Setup Promotion Card 1
         if (promotionCard1 != null) {
             TextView titleText1 = promotionCard1.findViewById(R.id.titleText);
             TextView subText1 = promotionCard1.findViewById(R.id.subText);
@@ -97,8 +103,8 @@ public class HomeFragment extends Fragment {
             LottieAnimationView lottieAnimation1 = promotionCard1.findViewById(R.id.lottieAnimation);
             View cardContainer1 = promotionCard1.findViewById(R.id.cardContainer);
 
-            titleText1.setText("Back to School");
-            subText1.setText("Book collection for student back to school");
+            titleText1.setText("Flash Sale! 🔥");
+            subText1.setText("50% OFF on all fiction books\nLimited time offer!");
 
             if (cardContainer1 != null) {
                 cardContainer1.setBackgroundResource(R.drawable.bg_promotion_yellow);
@@ -108,16 +114,16 @@ public class HomeFragment extends Fragment {
                 lottieAnimation1.setAnimation(R.raw.books_animation2);
                 lottieAnimation1.playAnimation();
             } catch (Exception e) {
-                Log.d("HomeFragment", "No Lottie animation found for Back to School card");
+                Log.d("HomeFragment", "No Lottie animation found for Flash Sale card");
             }
 
-            promotionCard1.setOnClickListener(v -> openPromotionScreen("back_to_school"));
-            goButton1.setOnClickListener(v -> openPromotionScreen("back_to_school"));
+            promotionCard1.setOnClickListener(v -> openPromotionScreen("flash_sale"));
+            goButton1.setOnClickListener(v -> openPromotionScreen("flash_sale"));
         } else {
             Log.e("HomeFragment", "promotionCard1 not found");
         }
 
-        // Setup BAC II Vacation Card
+        // Setup Special Discount Card 2 - Student Discount
         if (promotionCard2 != null) {
             TextView titleText2 = promotionCard2.findViewById(R.id.titleText);
             TextView subText2 = promotionCard2.findViewById(R.id.subText);
@@ -125,8 +131,8 @@ public class HomeFragment extends Fragment {
             LottieAnimationView lottieAnimation2 = promotionCard2.findViewById(R.id.lottieAnimation);
             View cardContainer2 = promotionCard2.findViewById(R.id.cardContainer);
 
-            titleText2.setText("BAC II Vacation");
-            subText2.setText("Book collection for students for High School");
+            titleText2.setText("Student Special 🎓");
+            subText2.setText("30% OFF for students\nValid with student ID");
 
             if (cardContainer2 != null) {
                 cardContainer2.setBackgroundResource(R.drawable.bg_promotion_pink);
@@ -136,11 +142,11 @@ public class HomeFragment extends Fragment {
                 lottieAnimation2.setAnimation(R.raw.books_animation);
                 lottieAnimation2.playAnimation();
             } catch (Exception e) {
-                Log.d("HomeFragment", "No Lottie animation found for BAC II Vacation card");
+                Log.d("HomeFragment", "No Lottie animation found for Student Special card");
             }
 
-            promotionCard2.setOnClickListener(v -> openPromotionScreen("bac_ii_vacation"));
-            goButton2.setOnClickListener(v -> openPromotionScreen("bac_ii_vacation"));
+            promotionCard2.setOnClickListener(v -> openPromotionScreen("student_discount"));
+            goButton2.setOnClickListener(v -> openPromotionScreen("student_discount"));
         } else {
             Log.e("HomeFragment", "promotionCard2 not found");
         }
@@ -220,8 +226,8 @@ public class HomeFragment extends Fragment {
             MaterialButton goButton = topCard.findViewById(R.id.goButton);
             LottieAnimationView lottieAnimation = topCard.findViewById(R.id.lottieAnimation);
 
-            titleText.setText("Back to School");
-            subText.setText("Discover books\nfrom various genres");
+            titleText.setText("Flash Sale! 🔥");
+            subText.setText("50% OFF on all fiction books\nLimited time offer!");
 
             try {
                 // Set first animation
@@ -274,7 +280,7 @@ public class HomeFragment extends Fragment {
         setupRecommendedAdapterClickListener();
 
         PostCardServiceHelper serviceHelper = new PostCardServiceHelper(postCardRepository);
-        serviceHelper.getTop5MostLikedBooks(new IApiCallback<List<PostCard>>() {
+        serviceHelper.getTop7MostLikedBooks(new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> likedBooks) {
                 binding.recommendBook.setText("Recommended Books");
@@ -283,6 +289,12 @@ public class HomeFragment extends Fragment {
 
                 // Update dot visibility based on number of items
                 updateDotIndicators(likedBooks.size());
+
+                // Start auto-slide if there are multiple books
+                if (likedBooks.size() > 1) {
+                    startAutoSlide();
+                }
+
                 hideProgressBar();
             }
 
@@ -293,6 +305,57 @@ public class HomeFragment extends Fragment {
                 loadDefaultBooks();
             }
         });
+    }
+
+    // Auto-slide functionality
+    private void startAutoSlide() {
+        if (isAutoSliding) return;
+
+        isAutoSliding = true;
+        sliderHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (recommendedAdapter != null && recommendedAdapter.getItemCount() > 1) {
+                    showNextCard();
+                    sliderHandler.postDelayed(this, SLIDE_INTERVAL);
+                }
+            }
+        }, SLIDE_INTERVAL);
+    }
+
+    private void showNextCard() {
+        if (recommendedAdapter == null || recommendedAdapter.getItemCount() == 0) return;
+
+        currentPosition = (currentPosition + 1) % recommendedAdapter.getItemCount();
+        binding.viewPagerRecommendation.smoothScrollToPosition(currentPosition);
+
+        // Update dot indicators to show current position
+        updateActiveDot(currentPosition);
+    }
+
+    private void stopAutoSlide() {
+        isAutoSliding = false;
+        sliderHandler.removeCallbacksAndMessages(null);
+    }
+
+    private void updateActiveDot(int position) {
+        ImageView[] dots = {
+                binding.bgBlueRecommendation,
+                binding.bgDot2Recommendation1,
+                binding.bgDot2Recommendation2,
+                binding.bgDot2Recommendation3,
+                binding.bgDot2Recommendation4
+        };
+
+        for (int i = 0; i < dots.length; i++) {
+            if (dots[i].getVisibility() == View.VISIBLE) {
+                if (i == position) {
+                    dots[i].setImageResource(R.drawable.blue_dot);
+                } else {
+                    dots[i].setImageResource(R.drawable.gray_dot);
+                }
+            }
+        }
     }
 
     private void updateDotIndicators(int itemCount) {
@@ -340,6 +403,12 @@ public class HomeFragment extends Fragment {
             public void onSuccess(List<PostCard> recentBooks) {
                 recommendedAdapter.setPostCards(recentBooks);
                 updateDotIndicators(recentBooks.size());
+
+                // Start auto-slide if there are multiple books
+                if (recentBooks.size() > 1) {
+                    startAutoSlide();
+                }
+
                 hideProgressBar();
             }
 
@@ -372,8 +441,8 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setupLatestBook() {
-        postCardRepository.getLatestPosts("books", "date", 1, new IApiCallback<List<PostCard>>() {
+    private void setupLatestBooks() {
+        postCardRepository.getLatestPosts("books", "date", 3, new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> postCards) {
                 if (postCards == null || postCards.isEmpty()) {
@@ -382,95 +451,160 @@ public class HomeFragment extends Fragment {
                     return;
                 }
 
-                PostCard book = postCards.get(0);
-                currentLatestBook = book;
-                displayLatestBook(book);
+                // Display books based on available data
+                if (postCards.size() >= 1) {
+                    currentLatestBook1 = postCards.get(0);
+                    displayLatestBook(currentLatestBook1, 1);
+                }
+                if (postCards.size() >= 2) {
+                    currentLatestBook2 = postCards.get(1);
+                    displayLatestBook(currentLatestBook2, 2);
+                }
+                if (postCards.size() >= 3) {
+                    currentLatestBook3 = postCards.get(2);
+                    displayLatestBook(currentLatestBook3, 3);
+                }
+
                 hideProgressBar();
             }
 
             @Override
             public void onError(String errorMessage) {
-                Log.e("HomeFragment", "Failed to load latest book: " + errorMessage);
+                Log.e("HomeFragment", "Failed to load latest books: " + errorMessage);
                 hideProgressBar();
             }
         });
     }
 
-    private void displayLatestBook(PostCard book) {
-        // Use proper binding references
-        Glide.with(requireContext())
-                .load(book.getImageUrl())
-                .centerCrop()
-                .placeholder(R.drawable.placeholder)
-                .into(binding.postImage);
+    private void displayLatestBook(PostCard book, int cardNumber) {
+        switch (cardNumber) {
+            case 1:
+                // Display in first card
+                Glide.with(requireContext())
+                        .load(book.getImageUrl())
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder)
+                        .into(binding.postImage);
 
-        binding.postTitle.setText(book.getTitle());
-        binding.postInformation.setText(book.getInformation());
-        binding.date.setText(book.getDate());
+                binding.postTitle.setText(book.getTitle());
+                binding.postInformation.setText(book.getInformation());
+                binding.date.setText(book.getDate());
 
-        if (book.getPrice() != null && !book.getPrice().isEmpty()) {
-            binding.postPrice.setText(book.getPrice() + " $");
-        } else {
-            binding.postPrice.setText("Free");
+                if (book.getPrice() != null && !book.getPrice().isEmpty()) {
+                    binding.postPrice.setText(book.getPrice() + " $");
+                } else {
+                    binding.postPrice.setText("Free");
+                }
+
+                if (book.getGenre() != null && !book.getGenre().isEmpty()) {
+                    binding.postGenre.setText(book.getGenre());
+                    binding.postGenre.setVisibility(View.VISIBLE);
+                } else {
+                    binding.postGenre.setVisibility(View.GONE);
+                }
+
+                if (book.getLocation() != null && !book.getLocation().isEmpty()) {
+                    binding.postLocation.setText(book.getLocation());
+                } else {
+                    binding.postLocation.setText("Book Store");
+                }
+
+                // Find the checkbox in the first card and set text
+                Chip checkbox1 = binding.latestCard.findViewById(R.id.checkbox);
+                if (checkbox1 != null) {
+                    checkbox1.setText("View Book");
+                }
+
+                loadUserData(book.getUserId(), requireContext(), 1);
+                break;
+
+            case 2:
+                // Display in second card
+                Glide.with(requireContext())
+                        .load(book.getImageUrl())
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder)
+                        .into(binding.postImage2);
+
+                binding.postTitle2.setText(book.getTitle());
+                binding.postInformation2.setText(book.getInformation());
+                binding.date2.setText(book.getDate());
+
+                if (book.getPrice() != null && !book.getPrice().isEmpty()) {
+                    binding.postPrice2.setText(book.getPrice() + " $");
+                } else {
+                    binding.postPrice2.setText("Free");
+                }
+
+                if (book.getGenre() != null && !book.getGenre().isEmpty()) {
+                    binding.postGenre2.setText(book.getGenre());
+                    binding.postGenre2.setVisibility(View.VISIBLE);
+                } else {
+                    binding.postGenre2.setVisibility(View.GONE);
+                }
+
+                if (book.getLocation() != null && !book.getLocation().isEmpty()) {
+                    binding.postLocation2.setText(book.getLocation());
+                } else {
+                    binding.postLocation2.setText("Book Store");
+                }
+
+                // Find the checkbox in the second card and set text
+                Chip checkbox2 = binding.latestCard2.findViewById(R.id.checkbox2);
+                if (checkbox2 != null) {
+                    checkbox2.setText("View Book");
+                }
+
+                loadUserData(book.getUserId(), requireContext(), 2);
+                break;
+
+            case 3:
+                // Display in third card
+                Glide.with(requireContext())
+                        .load(book.getImageUrl())
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder)
+                        .into(binding.postImage3);
+
+                binding.postTitle3.setText(book.getTitle());
+                binding.postInformation3.setText(book.getInformation());
+                binding.date3.setText(book.getDate());
+
+                if (book.getPrice() != null && !book.getPrice().isEmpty()) {
+                    binding.postPrice3.setText(book.getPrice() + " $");
+                } else {
+                    binding.postPrice3.setText("Free");
+                }
+
+                if (book.getGenre() != null && !book.getGenre().isEmpty()) {
+                    binding.postGenre3.setText(book.getGenre());
+                    binding.postGenre3.setVisibility(View.VISIBLE);
+                } else {
+                    binding.postGenre3.setVisibility(View.GONE);
+                }
+
+                if (book.getLocation() != null && !book.getLocation().isEmpty()) {
+                    binding.postLocation3.setText(book.getLocation());
+                } else {
+                    binding.postLocation3.setText("Book Store");
+                }
+
+                // Find the checkbox in the third card and set text
+                Chip checkbox3 = binding.latestCard3.findViewById(R.id.checkbox3);
+                if (checkbox3 != null) {
+                    checkbox3.setText("View Book");
+                }
+
+                loadUserData(book.getUserId(), requireContext(), 3);
+                break;
         }
-
-        if (book.getGenre() != null && !book.getGenre().isEmpty()) {
-            binding.postGenre.setText(book.getGenre());
-            binding.postGenre.setVisibility(View.VISIBLE);
-        } else {
-            binding.postGenre.setVisibility(View.GONE);
-        }
-
-        if (book.getLocation() != null && !book.getLocation().isEmpty()) {
-            binding.postLocation.setText(book.getLocation());
-        } else {
-            binding.postLocation.setText("Book Store");
-        }
-
-        // Find the checkbox in the latest card and set text
-        Chip checkbox = binding.latestCard.findViewById(R.id.checkbox);
-        if (checkbox != null) {
-            checkbox.setText("View Book");
-        }
-
-        loadUserData(book.getUserId(), requireContext());
     }
 
     private void setupClickListeners() {
-        // Set up click listener for the entire latest card
-        try {
-            binding.latestCard.setOnClickListener(v -> {
-                // Only navigate if we have a book
-                if (currentLatestBook != null) {
-                    openBookDetails(currentLatestBook);
-                } else {
-                    Toast.makeText(requireContext(), "No books available yet", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {
-            Log.e("HomeFragment", "Error setting latest card click listener", e);
-        }
-
-        // Set up click listener for the checkbox
-        try {
-            // Find the checkbox view in the latest card layout
-            Chip checkbox = binding.latestCard.findViewById(R.id.checkbox);
-            if (checkbox != null) {
-                checkbox.setOnClickListener(v -> {
-                    // Only navigate if we have a book
-                    if (currentLatestBook != null) {
-                        openBookDetails(currentLatestBook);
-                    } else {
-                        Toast.makeText(requireContext(), "No books available yet", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Log.d("HomeFragment", "Checkbox click listener set successfully");
-            } else {
-                Log.e("HomeFragment", "Checkbox not found in latest card");
-            }
-        } catch (Exception e) {
-            Log.e("HomeFragment", "Error setting checkbox click listener", e);
-        }
+        // Set up click listeners for all three latest cards
+        setupCardClickListener(binding.latestCard, currentLatestBook1, 1);
+        setupCardClickListener(binding.latestCard2, currentLatestBook2, 2);
+        setupCardClickListener(binding.latestCard3, currentLatestBook3, 3);
 
         // Set up skip button
         binding.tvSkip.setOnClickListener(v -> {
@@ -493,13 +627,58 @@ public class HomeFragment extends Fragment {
         });
     }
 
-//    កន្លែងនេះ បើចង់កែអោយuser ដទៃមិនបាច់login ក៏អាចមើលuser ផ្សេងក៏បានត្រូវកែ code + rule ក្នុងfirebase
-    private void loadUserData(String userId, Context context) {
+    private void setupCardClickListener(View cardView, PostCard book, int cardNumber) {
+        try {
+            cardView.setOnClickListener(v -> {
+                PostCard currentBook = getCurrentBookByCardNumber(cardNumber);
+                if (currentBook != null) {
+                    openBookDetails(currentBook);
+                } else {
+                    Toast.makeText(requireContext(), "No books available yet", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // Set up click listener for the checkbox
+            Chip checkbox = cardView.findViewById(getCheckboxIdByCardNumber(cardNumber));
+            if (checkbox != null) {
+                checkbox.setOnClickListener(v -> {
+                    PostCard currentBook = getCurrentBookByCardNumber(cardNumber);
+                    if (currentBook != null) {
+                        openBookDetails(currentBook);
+                    } else {
+                        Toast.makeText(requireContext(), "No books available yet", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.d("HomeFragment", "Checkbox " + cardNumber + " click listener set successfully");
+            } else {
+                Log.e("HomeFragment", "Checkbox " + cardNumber + " not found in card");
+            }
+        } catch (Exception e) {
+            Log.e("HomeFragment", "Error setting card " + cardNumber + " click listener", e);
+        }
+    }
+
+    private PostCard getCurrentBookByCardNumber(int cardNumber) {
+        switch (cardNumber) {
+            case 1: return currentLatestBook1;
+            case 2: return currentLatestBook2;
+            case 3: return currentLatestBook3;
+            default: return null;
+        }
+    }
+
+    private int getCheckboxIdByCardNumber(int cardNumber) {
+        switch (cardNumber) {
+            case 1: return R.id.checkbox;
+            case 2: return R.id.checkbox2;
+            case 3: return R.id.checkbox3;
+            default: return R.id.checkbox;
+        }
+    }
+
+    private void loadUserData(String userId, Context context, int cardNumber) {
         if (userId == null) {
-            // Use proper binding references
-            binding.userName.setText("Book Seller");
-            binding.userPhone.setText("No phone");
-            binding.userImage.setImageResource(R.drawable.placeholder);
+            setDefaultUserData(cardNumber);
             return;
         }
 
@@ -512,30 +691,70 @@ public class HomeFragment extends Fragment {
                 String imageUrl = snapshot.child("profileImageUrl").getValue(String.class);
                 String phone = snapshot.child("phoneNumber").getValue(String.class);
 
-                // Use proper binding references
+                setUserData(cardNumber, username, phone, imageUrl, context);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                setDefaultUserData(cardNumber);
+            }
+        });
+    }
+
+    private void setUserData(int cardNumber, String username, String phone, String imageUrl, Context context) {
+        switch (cardNumber) {
+            case 1:
                 binding.userName.setText(username != null ? username : "Book Seller");
-
-                if (phone != null && !phone.isEmpty()) {
-                    binding.userPhone.setText(phone);
-                } else {
-                    binding.userPhone.setText("No phone");
-                }
-
+                binding.userPhone.setText(phone != null && !phone.isEmpty() ? phone : "No phone");
                 if (imageUrl != null && !imageUrl.isEmpty()) {
                     Glide.with(context).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop().into(binding.userImage);
                 } else {
                     binding.userImage.setImageResource(R.drawable.placeholder);
                 }
-            }
+                break;
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Use proper binding references
+            case 2:
+                binding.userName2.setText(username != null ? username : "Book Seller");
+                binding.userPhone2.setText(phone != null && !phone.isEmpty() ? phone : "No phone");
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(context).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop().into(binding.userImage2);
+                } else {
+                    binding.userImage2.setImageResource(R.drawable.placeholder);
+                }
+                break;
+
+            case 3:
+                binding.userName3.setText(username != null ? username : "Book Seller");
+                binding.userPhone3.setText(phone != null && !phone.isEmpty() ? phone : "No phone");
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(context).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop().into(binding.userImage3);
+                } else {
+                    binding.userImage3.setImageResource(R.drawable.placeholder);
+                }
+                break;
+        }
+    }
+
+    private void setDefaultUserData(int cardNumber) {
+        switch (cardNumber) {
+            case 1:
                 binding.userName.setText("Book Seller");
                 binding.userPhone.setText("No phone");
                 binding.userImage.setImageResource(R.drawable.placeholder);
-            }
-        });
+                break;
+
+            case 2:
+                binding.userName2.setText("Book Seller");
+                binding.userPhone2.setText("No phone");
+                binding.userImage2.setImageResource(R.drawable.placeholder);
+                break;
+
+            case 3:
+                binding.userName3.setText("Book Seller");
+                binding.userPhone3.setText("No phone");
+                binding.userImage3.setImageResource(R.drawable.placeholder);
+                break;
+        }
     }
 
     private void openBookDetails(PostCard book) {
@@ -569,17 +788,34 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // Lifecycle methods for auto-slide
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Resume auto-slide if there are multiple books
+        if (recommendedAdapter != null && recommendedAdapter.getItemCount() > 1 && !isAutoSliding) {
+            startAutoSlide();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopAutoSlide();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopAutoSlide();
+        binding = null;
+    }
+
     private void showProgressBar() {
         if (homeActivity != null) homeActivity.showProgressBar();
     }
 
     private void hideProgressBar() {
         if (homeActivity != null) homeActivity.hideProgressBar();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

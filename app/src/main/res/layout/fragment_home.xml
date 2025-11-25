@@ -45,7 +45,7 @@
                     android:orientation="horizontal"
                     android:paddingEnd="10dp">
 
-                    <!-- Promotion Card 1: Back to School -->
+                    <!-- Promotion Card 1 -->
                     <include
                         android:id="@+id/promotionCard1"
                         layout="@layout/item_card"
@@ -53,7 +53,7 @@
                         android:layout_height="140dp"
                         android:layout_marginEnd="12dp" />
 
-                    <!-- Promotion Card 2: BAC II Vacation -->
+                    <!-- Promotion Card 2-->
                     <include
                         android:id="@+id/promotionCard2"
                         layout="@layout/item_card"
@@ -107,13 +107,13 @@
                 android:id="@+id/book_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="start"
                 android:text="Book Genre"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="start"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
             <HorizontalScrollView
                 android:id="@+id/viewPagerGenre"
@@ -280,7 +280,19 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Section 4: All Book Card -->
+        <!-- Latest Book Title - MOVED OUTSIDE OF CARDS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Latest Book"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Section 4: All Book Card - Fixed -->
         <androidx.cardview.widget.CardView
             android:id="@+id/latestCard"
             android:layout_width="match_parent"
@@ -486,6 +498,418 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Section 4.1: Second Book Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/latestCard2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Top section: Image (portrait size) + Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <!-- Left: Portrait Image - FIXED DIMENSIONS -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/postImage2"
+                        android:layout_width="117dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder" />
+
+                    <!-- Right: Content - takes remaining space -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Title and Price -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/postTitle2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:text="Mystery Novel"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/postPrice2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="7 $"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Genre -->
+                        <TextView
+                            android:id="@+id/postGenre2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Mystery"
+                            android:textColor="@android:color/holo_blue_dark"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <!-- Description -->
+                        <TextView
+                            android:id="@+id/postInformation2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:lineHeight="20dp"
+                            android:layout_marginBottom="35dp"
+                            android:minHeight="60dp"
+                            android:ellipsize="end"
+                            android:maxLines="4"
+                            android:text="A thrilling mystery story that will keep you guessing until the very end."
+                            android:textSize="11sp" />
+
+                        <!-- Date & Location -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Date -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_calendar" />
+
+                                <TextView
+                                    android:id="@+id/date2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="Nov, 15 2025"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <!-- Location -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_pin" />
+
+                                <TextView
+                                    android:id="@+id/postLocation2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="RUPP"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- User Info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:shapeAppearanceOverlay="@style/RoundedCorner">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/userImage2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        app:shapeAppearanceOverlay="@style/UserPostImageView2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/userName2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sok Socheatra"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userPhone2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="012 345 678"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/checkbox2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/light_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="View"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section 4.2: Third Book Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/latestCard3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Top section: Image (portrait size) + Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <!-- Left: Portrait Image - FIXED DIMENSIONS -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/postImage3"
+                        android:layout_width="117dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder" />
+
+                    <!-- Right: Content - takes remaining space -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Title and Price -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/postTitle3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:text="Fantasy Adventure"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/postPrice3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="9 $"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Genre -->
+                        <TextView
+                            android:id="@+id/postGenre3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Fantasy"
+                            android:textColor="@android:color/holo_blue_dark"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <!-- Description -->
+                        <TextView
+                            android:id="@+id/postInformation3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:lineHeight="20dp"
+                            android:layout_marginBottom="35dp"
+                            android:minHeight="60dp"
+                            android:ellipsize="end"
+                            android:maxLines="4"
+                            android:text="An epic fantasy journey through magical lands with dragons and heroes."
+                            android:textSize="11sp" />
+
+                        <!-- Date & Location -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <!-- Date -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_calendar" />
+
+                                <TextView
+                                    android:id="@+id/date3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="Dec, 20 2025"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <!-- Location -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ico_pin" />
+
+                                <TextView
+                                    android:id="@+id/postLocation3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="RUPP"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- User Info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:shapeAppearanceOverlay="@style/RoundedCorner">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/userImage3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"
+                        app:shapeAppearanceOverlay="@style/UserPostImageView2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/userName3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vat Vannaden"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userPhone3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="013 579 246"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/checkbox3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/light_blue"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="View"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <!-- Section 5: See More -->
         <TextView
@@ -499,7 +923,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="10dp"/>
 
         <!-- Section 6: Create Book Button -->
         <com.google.android.material.button.MaterialButton
@@ -508,7 +932,7 @@
             android:layout_height="65dp"
             android:layout_marginHorizontal="41.5dp"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="50dp"
             android:backgroundTint="@color/light_blue"
             android:text="Create Book"
             android:textColor="@color/white"

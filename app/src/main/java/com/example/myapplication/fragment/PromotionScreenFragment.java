@@ -53,9 +53,9 @@ public class PromotionScreenFragment extends Fragment {
 
         // Get promotion type from arguments
         if (getArguments() != null) {
-            promotionType = getArguments().getString("promotionType", "back_to_school");
+            promotionType = getArguments().getString("promotionType", "flash_sale");
         } else {
-            promotionType = "back_to_school";
+            promotionType = "flash_sale";
         }
 
         Log.d("PromotionScreen", "=== STARTING PROMOTION SCREEN ===");
@@ -70,14 +70,14 @@ public class PromotionScreenFragment extends Fragment {
 
     private void setupHeader() {
         switch (promotionType) {
-            case "back_to_school":
-                binding.tvHeaderTitle.setText("Back to School");
-                binding.tvHeaderSubtitle.setText("Book collection for student back to school");
+            case "flash_sale":
+                binding.tvHeaderTitle.setText("Flash Sale! 🔥");
+                binding.tvHeaderSubtitle.setText("50% OFF on all fiction books\nLimited time offer!");
                 binding.headerBackground.setBackgroundColor(getResources().getColor(R.color.yellow));
                 break;
-            case "bac_ii_vacation":
-                binding.tvHeaderTitle.setText("BAC II Vacation");
-                binding.tvHeaderSubtitle.setText("Book collection for students for High School");
+            case "student_discount":
+                binding.tvHeaderTitle.setText("Student Special 🎓");
+                binding.tvHeaderSubtitle.setText("30% OFF for students\nValid with student ID");
                 binding.headerBackground.setBackgroundColor(getResources().getColor(R.color.pink));
                 break;
             default:
@@ -97,7 +97,6 @@ public class PromotionScreenFragment extends Fragment {
         Log.d("PromotionScreen", "RecyclerView setup completed");
     }
 
-//    change in 20-11-2025
     private void setupAdapterClickListener() {
         adapter.setOnItemClickListener(new PostCardLikeAdapter.OnItemClickListener() {
             @Override
@@ -204,15 +203,18 @@ public class PromotionScreenFragment extends Fragment {
         List<String> genres = new ArrayList<>();
 
         switch (promotionType) {
-            case "back_to_school":
-                genres.add("Japanese");
-                genres.add("Comedy");
+            case "flash_sale":
+                // Fiction genres for flash sale
+                genres.add("Fantasy");
                 genres.add("Mystery");
+                genres.add("Horror");
+                genres.add("Comedy");
                 break;
-            case "bac_ii_vacation":
+            case "student_discount":
+                // Educational genres for student discount
+                genres.add("Japanese");
                 genres.add("Historical");
                 genres.add("Biography");
-                genres.add("Horror");
                 break;
             default:
                 genres.add("Fantasy");
@@ -223,9 +225,12 @@ public class PromotionScreenFragment extends Fragment {
 
     private String getPromotionTitle() {
         switch (promotionType) {
-            case "back_to_school": return "Back to School";
-            case "bac_ii_vacation": return "BAC II Vacation";
-            default: return "Promotion";
+            case "flash_sale":
+                return "Flash Sale";
+            case "student_discount":
+                return "Student Discount";
+            default:
+                return "Promotion";
         }
     }
 

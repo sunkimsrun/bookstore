@@ -127,7 +127,7 @@ public class PostBookFragment extends Fragment {
     }
 
     private void setupGenreSpinner() {
-        String[] genres = {"Book Genre", "Japanese", "Mystery", "Comedy", "Historical", "Biography", "Horror", "Fantasy", "Romance", "Science Fiction", "Thriller", "Adventure", "Educational"};
+        String[] genres = {"Book Genre", "Japanese", "Mystery", "Comedy", "Historical", "Biography", "Horror", "Fantasy"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, genres);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerGenre.setAdapter(adapter);
@@ -196,6 +196,10 @@ public class PostBookFragment extends Fragment {
         String priceInput = binding.inputprice.getText().toString().trim();
         String price = priceInput.isEmpty() ? "Free" : priceInput;
 
+        Log.d("PostBookFragment", "Submitting post - Genre: " + selectedGenre);
+        Log.d("PostBookFragment", "Date: " + date + ", Time: " + time);
+        Log.d("PostBookFragment", "Image URI: " + (imageUri != null ? "Set" : "Null"));
+
         // Validation
         if (title.isEmpty()) {
             Toast.makeText(getContext(), "Please enter book title", Toast.LENGTH_SHORT).show();
@@ -237,15 +241,17 @@ public class PostBookFragment extends Fragment {
         String filename = UUID.randomUUID().toString() + ".jpg";
         StorageReference storageRef = FirebaseStorage.getInstance().getReference("book_images/" + filename);
 
-        storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                uploadDataToDatabase(title, info, email, phone, date, time, price, uri.toString(), selectedGenre);
-            });
-        }).addOnFailureListener(e -> {
-            hideProgressBar();
-            Toast.makeText(getContext(), "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e("PostBookFragment", "Image upload failed: " + e.getMessage());
-        });
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        uploadDataToDatabase(title, info, email, phone, date, time, price, uri.toString(), selectedGenre);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    hideProgressBar();
+                    Toast.makeText(getContext(), "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("PostBookFragment", "Image upload failed: " + e.getMessage());
+                });
     }
 
     private void uploadDataToDatabase(String title, String info, String email, String phone,
@@ -264,7 +270,6 @@ public class PostBookFragment extends Fragment {
             generatedPostId = UUID.randomUUID().toString();
         }
 
-        // Use a new final variable for the lambda
         final String finalPostId = generatedPostId;
 
         PostCard postCard = new PostCard();
@@ -276,29 +281,82 @@ public class PostBookFragment extends Fragment {
         postCard.setPostTime(time);
         postCard.setImageUrl(imageUrl);
         postCard.setUserId(userId);
-        postCard.setPostId(finalPostId); // Use the final variable here
+        postCard.setPostId(finalPostId);
         postCard.setGenre(genre);
         postCard.setPrice(price);
         postCard.setStatus("Available");
-        postCard.setLocation("Royal University of Phnom Penh");
+        postCard.setLocation("RUPP");
 
         String createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(Calendar.getInstance().getTime());
         postCard.setCreatedDate(createdDate);
 
-        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference("books").child(finalPostId); // And also here
+        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference("books").child(finalPostId);
 
         bookRef.setValue(postCard)
                 .addOnSuccessListener(aVoid -> {
                     hideProgressBar();
-                    // ... your existing code
+                    Log.d("PostBookFragment", "Book posted successfully with ID: " + finalPostId);
+
+                    // Reset the form
+                    resetForm();
+
+                    // Navigate to detail screen
+                    navigateToDetailScreen(finalPostId);
+
+                    Toast.makeText(getContext(), "Book posted successfully!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     hideProgressBar();
-                    // ... your existing code
+                    Log.e("PostBookFragment", "Database upload failed: " + e.getMessage());
+                    Toast.makeText(getContext(), "Failed to post book: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
+    private void resetForm() {
+        binding.inputTitle.setText("");
+        binding.inputInformation.setText("");
+        binding.editPhone.setText("+855 ");
+        binding.inputprice.setText("");
+        binding.tvSelectedDate.setText("Select Date");
+        binding.tvSelectedTime.setText("Select Time");
+        binding.spinnerGenre.setSelection(0); // Reset to "Book Genre"
+        binding.inputImage.setImageResource(R.drawable.bg_input_image);
+        binding.inputImage.setBackgroundResource(R.drawable.bg_input_edit_text);
+        binding.selectImageOverlay.setVisibility(View.VISIBLE);
+        binding.checkBoxPolicy.setChecked(false);
+        imageUri = null;
+        selectedGenre = "";
+
+        Log.d("PostBookFragment", "Form reset successfully");
+    }
+
+    private void navigateToDetailScreen(String postId) {
+        try {
+            if (getActivity() instanceof HomeActivity) {
+                HomeActivity homeActivity = (HomeActivity) getActivity();
+
+                // Create PostDetailFragment instance
+                PostDetailFragment postDetailFragment = new PostDetailFragment();
+
+                // Create bundle with postId
+                Bundle bundle = new Bundle();
+                bundle.putString("postId", postId);
+                bundle.putString("back", "Home"); // Set back destination to Home
+
+                postDetailFragment.setArguments(bundle);
+
+                // Navigate to detail fragment using your existing LoadFragment method
+                homeActivity.LoadFragment(postDetailFragment);
+                Log.d("PostBookFragment", "Navigation to detail screen initiated for post: " + postId);
+            } else {
+                Log.e("PostBookFragment", "Activity is not HomeActivity, cannot navigate");
+            }
+        } catch (Exception e) {
+            Log.e("PostBookFragment", "Error navigating to detail screen: " + e.getMessage());
+            Toast.makeText(getContext(), "Error navigating to book details", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -330,22 +388,30 @@ public class PostBookFragment extends Fragment {
                     binding.inputImage.setBackground(null);
                     binding.selectImageOverlay.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Image selected", Toast.LENGTH_SHORT).show();
+                    Log.d("PostBookFragment", "Image cropped and set successfully");
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
             if (cropError != null) {
                 Toast.makeText(getContext(), "Crop error: " + cropError.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("PostBookFragment", "Crop error: " + cropError.getMessage());
             }
         }
     }
 
     private void showProgressBar() {
-        if (homeActivity != null) homeActivity.showProgressBar();
+        if (homeActivity != null) {
+            homeActivity.showProgressBar();
+            Log.d("PostBookFragment", "Progress bar shown");
+        }
     }
 
     private void hideProgressBar() {
-        if (homeActivity != null) homeActivity.hideProgressBar();
+        if (homeActivity != null) {
+            homeActivity.hideProgressBar();
+            Log.d("PostBookFragment", "Progress bar hidden");
+        }
     }
 
     @Override

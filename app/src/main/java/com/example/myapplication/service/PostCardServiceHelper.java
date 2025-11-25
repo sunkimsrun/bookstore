@@ -62,9 +62,9 @@ public class PostCardServiceHelper {
     }
 
     /**
-     * Get top 5 most liked books based on user likes
+     * Get top 7 most liked books based on user likes
      */
-    public void getTop5MostLikedBooks(final IApiCallback<List<PostCard>> callback) {
+    public void getTop7MostLikedBooks(final IApiCallback<List<PostCard>> callback) {
         // First get all books
         repository.getAllPosts("books", new IApiCallback<List<PostCard>>() {
             @Override
@@ -73,7 +73,7 @@ public class PostCardServiceHelper {
                 getAllBooksLikeCountFromUsers(new IApiCallback<Map<String, Integer>>() {
                     @Override
                     public void onSuccess(Map<String, Integer> bookLikeCount) {
-                        // Sort books by like count (highest first) and get top 5
+                        // Sort books by like count (highest first) and get top 7
                         List<PostCard> topLikedBooks = new ArrayList<>();
 
                         // Create a copy to avoid stream issues
@@ -93,15 +93,15 @@ public class PostCardServiceHelper {
                             return Integer.compare(likes2, likes1); // Descending order
                         });
 
-                        // Get top 5
-                        for (int i = 0; i < Math.min(5, allBooks.size()); i++) {
+                        // Get top 7
+                        for (int i = 0; i < Math.min(7, allBooks.size()); i++) {
                             topLikedBooks.add(allBooks.get(i));
                         }
 
-                        // If we have less than 5 liked books, add some from the remaining books
-                        if (topLikedBooks.size() < 5) {
+                        // If we have less than 7 liked books, add some from the remaining books
+                        if (topLikedBooks.size() < 7) {
                             for (PostCard book : allBooks) {
-                                if (!topLikedBooks.contains(book) && topLikedBooks.size() < 5) {
+                                if (!topLikedBooks.contains(book) && topLikedBooks.size() < 7) {
                                     topLikedBooks.add(book);
                                 }
                             }
@@ -120,12 +120,12 @@ public class PostCardServiceHelper {
                     @Override
                     public void onError(String errorMessage) {
                         Log.e("PostCardServiceHelper", "Error getting book likes: " + errorMessage);
-                        // Fallback: return first 5 books if we can't get likes
-                        List<PostCard> top5 = new ArrayList<>();
-                        for (int i = 0; i < Math.min(5, postCards.size()); i++) {
-                            top5.add(postCards.get(i));
+                        // Fallback: return first 7 books if we can't get likes
+                        List<PostCard> top7 = new ArrayList<>();
+                        for (int i = 0; i < Math.min(7, postCards.size()); i++) {
+                            top7.add(postCards.get(i));
                         }
-                        callback.onSuccess(top5);
+                        callback.onSuccess(top7);
                     }
                 });
             }
@@ -208,9 +208,9 @@ public class PostCardServiceHelper {
     }
 
     /**
-     * Get top 5 books of a specific genre
+     * Get top 7 books of a specific genre
      */
-    public void getTop5BooksByGenre(String genre, final IApiCallback<List<PostCard>> callback) {
+    public void getTop7BooksByGenre(String genre, final IApiCallback<List<PostCard>> callback) {
         repository.getAllPosts("books", new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> postCards) {
@@ -218,7 +218,7 @@ public class PostCardServiceHelper {
                 for (PostCard post : postCards) {
                     if (genre != null && genre.equalsIgnoreCase(post.getGenre())) {
                         filtered.add(post);
-                        if (filtered.size() >= 5) {
+                        if (filtered.size() >= 7) {
                             break;
                         }
                     }
