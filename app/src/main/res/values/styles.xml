@@ -21,7 +21,7 @@
     <!-- Style : Post Items Image -->
     <style name="RoundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">15dp</item>
+        <item name="cornerSize">1dp</item>
     </style>
 
     <!--  Style : Post Items -->
