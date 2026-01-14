@@ -14,3 +14,5 @@
 .cxx
 local.properties
 
+# Firebase / Google secrets
+google-services.json

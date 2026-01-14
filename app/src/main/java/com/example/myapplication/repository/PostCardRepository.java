@@ -24,6 +24,8 @@ import retrofit2.Response;
 public class PostCardRepository {
 
     private final PostCardService postCardService;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private final SimpleDateFormat sdfShort = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     public PostCardRepository() {
         postCardService = RetrofitClient.getClient().create(PostCardService.class);
@@ -32,20 +34,23 @@ public class PostCardRepository {
     public void getAllPosts(String itemType, final IApiCallback<List<PostCard>> callback) {
         Log.d("PostCardRepository", "Getting all posts for: " + itemType);
 
-        // Remove the orderBy parameter from the URL since it's causing the 400 error
-        // We'll use the basic endpoint without ordering
         postCardService.getCards(itemType).enqueue(new Callback<Map<String, PostCard>>() {
             @Override
             public void onResponse(@NonNull Call<Map<String, PostCard>> call, @NonNull Response<Map<String, PostCard>> response) {
                 Log.d("PostCardRepository", "Response code: " + response.code());
                 if (response.isSuccessful() && response.body() != null) {
-                    List<PostCard> posts = new ArrayList<>(response.body().values());
-                    Log.d("PostCardRepository", "Successfully loaded " + posts.size() + " posts");
+                    try {
+                        List<PostCard> posts = new ArrayList<>(response.body().values());
+                        Log.d("PostCardRepository", "Successfully loaded " + posts.size() + " posts");
 
-                    // Sort locally by date (newest first)
-                    sortPostsByDateDescending(posts);
+                        // Sort locally by date (newest first)
+                        sortPostsByDateDescending(posts);
 
-                    callback.onSuccess(posts);
+                        callback.onSuccess(posts);
+                    } catch (Exception e) {
+                        Log.e("PostCardRepository", "Error processing posts: " + e.getMessage(), e);
+                        callback.onError("Error processing posts: " + e.getMessage());
+                    }
                 } else {
                     String errorMsg = getErrorMessage(response);
                     Log.e("PostCardRepository", "Error in getAllPosts: " + errorMsg);
@@ -83,11 +88,15 @@ public class PostCardRepository {
     public void getLatestPosts(String itemType, String orderBy, int limit, final IApiCallback<List<PostCard>> callback) {
         Log.d("PostCardRepository", "Getting latest posts: " + itemType);
 
-        // Use getAllPosts and then take the first 'limit' items
         getAllPosts(itemType, new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> allPosts) {
-                List<PostCard> limitedPosts = allPosts.subList(0, Math.min(limit, allPosts.size()));
+                List<PostCard> limitedPosts;
+                if (allPosts == null || allPosts.isEmpty()) {
+                    limitedPosts = new ArrayList<>();
+                } else {
+                    limitedPosts = allPosts.subList(0, Math.min(limit, allPosts.size()));
+                }
                 Log.d("PostCardRepository", "Returning " + limitedPosts.size() + " latest posts");
                 callback.onSuccess(limitedPosts);
             }
@@ -100,7 +109,6 @@ public class PostCardRepository {
     }
 
     public void getCardsByDates(String itemType, String orderBy, String startDate, String endDate, final IApiCallback<List<PostCard>> callback) {
-        // For now, use getAllPosts and filter locally to avoid index issues
         getAllPosts(itemType, new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> allPosts) {
@@ -120,10 +128,19 @@ public class PostCardRepository {
         String itemType = "books";
         Log.d("PostCardRepository", "Fetching books for genre: " + genre);
 
-        // Get all books and filter by genre locally
+        if (genre == null || genre.isEmpty()) {
+            callback.onSuccess(new ArrayList<>());
+            return;
+        }
+
         getAllPosts(itemType, new IApiCallback<List<PostCard>>() {
             @Override
             public void onSuccess(List<PostCard> allBooks) {
+                if (allBooks == null) {
+                    callback.onSuccess(new ArrayList<>());
+                    return;
+                }
+
                 List<PostCard> filteredBooks = new ArrayList<>();
 
                 for (PostCard book : allBooks) {
@@ -182,14 +199,27 @@ public class PostCardRepository {
     }
 
     private void sortPostsByDateDescending(List<PostCard> posts) {
+        if (posts == null) return;
+
         posts.sort((p1, p2) -> {
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                Date d1 = sdf.parse(p1.getCreatedDate());
-                Date d2 = sdf.parse(p2.getCreatedDate());
+                // Try to parse with createdDate first
+                String dateStr1 = p1.getCreatedDate() != null ? p1.getCreatedDate() : p1.getDate();
+                String dateStr2 = p2.getCreatedDate() != null ? p2.getCreatedDate() : p2.getDate();
+
+                if (dateStr1 == null || dateStr2 == null) {
+                    return 0;
+                }
+
+                Date d1 = sdf.parse(dateStr1);
+                Date d2 = sdf.parse(dateStr2);
                 return d2.compareTo(d1); // Descending order (newest first)
             } catch (ParseException e) {
-                Log.e("PostCardRepository", "Date parsing error", e);
+                Log.e("PostCardRepository", "Date parsing error for sorting", e);
+                // Try alternative date format or return 0
+                return 0;
+            } catch (Exception e) {
+                Log.e("PostCardRepository", "Error sorting posts", e);
                 return 0;
             }
         });
@@ -197,15 +227,32 @@ public class PostCardRepository {
 
     private List<PostCard> filterPostsByDateRange(List<PostCard> posts, String startDate, String endDate) {
         List<PostCard> filtered = new ArrayList<>();
+
+        if (posts == null || startDate == null || endDate == null) {
+            return filtered;
+        }
+
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date start = sdf.parse(startDate);
-            Date end = sdf.parse(endDate);
+            Date start = sdfShort.parse(startDate);
+            Date end = sdfShort.parse(endDate);
 
             for (PostCard post : posts) {
-                Date postDate = sdf.parse(post.getDate());
-                if (!postDate.before(start) && !postDate.after(end)) {
-                    filtered.add(post);
+                try {
+                    String postDateStr = post.getDate();
+                    if (postDateStr == null) {
+                        postDateStr = post.getCreatedDate();
+                    }
+
+                    if (postDateStr != null) {
+                        // Try to parse the date
+                        Date postDate = sdfShort.parse(postDateStr);
+                        if (postDate != null && !postDate.before(start) && !postDate.after(end)) {
+                            filtered.add(post);
+                        }
+                    }
+                } catch (ParseException e) {
+                    // Skip posts with invalid date format
+                    Log.w("PostCardRepository", "Skipping post with invalid date format: " + post.getTitle());
                 }
             }
         } catch (ParseException e) {

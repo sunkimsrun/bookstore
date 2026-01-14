@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +43,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -57,9 +61,13 @@ public class HomeFragment extends Fragment {
     private boolean isAutoSliding = false;
     private int currentPosition = 0;
     private static final long SLIDE_INTERVAL = 3000; // 3 seconds
+    private ViewTreeObserver.OnScrollChangedListener mScrollListener;
 
     // Genre buttons
     private ImageButton btnJapanese, btnComedy, btnMystery, btnHistorical, btnBiography, btnHorror, btnFantasy;
+
+    // Handler for dots setup delay
+    private Handler dotsHandler = new Handler(Looper.getMainLooper());
 
     public HomeFragment() {
     }
@@ -83,7 +91,7 @@ public class HomeFragment extends Fragment {
 
         showProgressBar();
         setupPromotionCards();
-        setupTopCard();
+        setupTopCardDots();
         setupGenreButtons();
         setupRecommendedBooks();
         setupTopUsers();
@@ -114,7 +122,7 @@ public class HomeFragment extends Fragment {
                 lottieAnimation1.setAnimation(R.raw.books_animation2);
                 lottieAnimation1.playAnimation();
             } catch (Exception e) {
-                Log.d("HomeFragment", "No Lottie animation found for Flash Sale card");
+                Log.d("HomeFragment", "No Lottie animation found for Flash Sale card", e);
             }
 
             promotionCard1.setOnClickListener(v -> openPromotionScreen("flash_sale"));
@@ -142,7 +150,7 @@ public class HomeFragment extends Fragment {
                 lottieAnimation2.setAnimation(R.raw.books_animation);
                 lottieAnimation2.playAnimation();
             } catch (Exception e) {
-                Log.d("HomeFragment", "No Lottie animation found for Student Special card");
+                Log.d("HomeFragment", "No Lottie animation found for Student Special card", e);
             }
 
             promotionCard2.setOnClickListener(v -> openPromotionScreen("student_discount"));
@@ -152,35 +160,101 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void setupGenreButtons() {
-        // Find genre buttons by their IDs
-        btnJapanese = binding.getRoot().findViewById(R.id.japaneseGenre);
-        btnComedy = binding.getRoot().findViewById(R.id.comedyGenre);
-        btnMystery = binding.getRoot().findViewById(R.id.mysteryGenre);
-        btnHistorical = binding.getRoot().findViewById(R.id.historicalGenre);
-        btnBiography = binding.getRoot().findViewById(R.id.biographyGenre);
-        btnHorror = binding.getRoot().findViewById(R.id.horrorGenre);
-        btnFantasy = binding.getRoot().findViewById(R.id.fantasyGenre);
+    //    កូដនេះត្រូវប្រើវែងបែបនេះមកពីយើងចង់អោយទាំងemulator និង phone device ដំណើរការទាំង2 ព្រោះThe 300ms delay is arbitrary and might be
+//    too long or too short on some devices. A better approach would be to use a ViewTreeObserver.OnGlobalLayoutListener
+//    to wait for the layout to be complete, but the delay is a simple fix that works in practice.
+    private void setupTopCardDots() {
+        ImageView blueDot = binding.bgBlueTop;
+        ImageView grayDot = binding.bgDot2Top;
+        HorizontalScrollView scrollView = binding.promotionScrollView;
 
-        // Set click listeners for genre buttons
-        View.OnClickListener genreClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String genre = getGenreFromButtonId(v.getId());
-                if (genre != null) {
-                    openAllBooksFragmentWithGenre(genre);
-                }
+        if (blueDot == null || grayDot == null || scrollView == null) {
+            Log.e("HomeFragment", "setupTopCardDots: Some views are null");
+            return;
+        }
+
+        // Set initial state
+        blueDot.setImageResource(R.drawable.blue_dot);
+        grayDot.setImageResource(R.drawable.gray_dot);
+
+        // Use postDelayed to ensure layout is complete
+        dotsHandler.postDelayed(() -> {
+            // Check if fragment is still attached
+            if (binding == null || getActivity() == null || getActivity().isFinishing()) {
+                return;
             }
-        };
+            setupSimpleDots(blueDot, grayDot, scrollView);
+        }, 300);
+    }
 
-        // Apply click listeners to all genre buttons
-        if (btnJapanese != null) btnJapanese.setOnClickListener(genreClickListener);
-        if (btnComedy != null) btnComedy.setOnClickListener(genreClickListener);
-        if (btnMystery != null) btnMystery.setOnClickListener(genreClickListener);
-        if (btnHistorical != null) btnHistorical.setOnClickListener(genreClickListener);
-        if (btnBiography != null) btnBiography.setOnClickListener(genreClickListener);
-        if (btnHorror != null) btnHorror.setOnClickListener(genreClickListener);
-        if (btnFantasy != null) btnFantasy.setOnClickListener(genreClickListener);
+    private void setupSimpleDots(ImageView blueDot, ImageView grayDot, HorizontalScrollView scrollView) {
+        // Blue dot - scroll to start
+        blueDot.setOnClickListener(v -> {
+            if (binding == null) return;
+            blueDot.setImageResource(R.drawable.blue_dot);
+            grayDot.setImageResource(R.drawable.gray_dot);
+            scrollView.post(() -> scrollView.smoothScrollTo(0, 0));
+        });
+
+        // Gray dot - scroll to end (second card)
+        grayDot.setOnClickListener(v -> {
+            if (binding == null) return;
+            blueDot.setImageResource(R.drawable.gray_dot);
+            grayDot.setImageResource(R.drawable.blue_dot);
+            scrollView.post(() -> {
+                // Calculate scroll position
+                if (getActivity() == null) return;
+                int screenWidth = getResources().getDisplayMetrics().widthPixels;
+                int margin = 32;
+                scrollView.smoothScrollTo(screenWidth - margin, 0);
+            });
+        });
+
+        // Create a safe scroll listener that uses WeakReference
+        SafeScrollListener safeScrollListener = new SafeScrollListener(blueDot, grayDot, scrollView);
+        mScrollListener = safeScrollListener;
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(mScrollListener);
+    }
+
+    // Safe scroll listener using WeakReference to avoid memory leaks
+    private static class SafeScrollListener implements ViewTreeObserver.OnScrollChangedListener {
+        private final WeakReference<ImageView> blueDotRef;
+        private final WeakReference<ImageView> grayDotRef;
+        private final WeakReference<HorizontalScrollView> scrollViewRef;
+
+        SafeScrollListener(ImageView blueDot, ImageView grayDot, HorizontalScrollView scrollView) {
+            this.blueDotRef = new WeakReference<>(blueDot);
+            this.grayDotRef = new WeakReference<>(grayDot);
+            this.scrollViewRef = new WeakReference<>(scrollView);
+        }
+
+        @Override
+        public void onScrollChanged() {
+            ImageView blueDot = blueDotRef.get();
+            ImageView grayDot = grayDotRef.get();
+            HorizontalScrollView scrollView = scrollViewRef.get();
+
+            if (blueDot == null || grayDot == null || scrollView == null) {
+                return;
+            }
+
+            try {
+                int maxScroll = scrollView.getChildAt(0).getWidth() - scrollView.getWidth();
+                int currentScroll = scrollView.getScrollX();
+
+                if (currentScroll > maxScroll / 2) {
+                    blueDot.setImageResource(R.drawable.gray_dot);
+                    grayDot.setImageResource(R.drawable.blue_dot);
+                } else {
+                    blueDot.setImageResource(R.drawable.blue_dot);
+                    grayDot.setImageResource(R.drawable.gray_dot);
+                }
+            } catch (Exception e) {
+                // Ignore exceptions after view destruction
+                Log.d("HomeFragment", "Scroll listener error: " + e.getMessage());
+            }
+        }
     }
 
     private String getGenreFromButtonId(int buttonId) {
@@ -215,53 +289,6 @@ public class HomeFragment extends Fragment {
 
         if (getActivity() instanceof HomeActivity) {
             ((HomeActivity) getActivity()).LoadFragment(fragment);
-        }
-    }
-
-    private void setupTopCard() {
-        View topCard = binding.getRoot().findViewById(R.id.cardContainer);
-        if (topCard != null) {
-            TextView titleText = topCard.findViewById(R.id.titleText);
-            TextView subText = topCard.findViewById(R.id.subText);
-            MaterialButton goButton = topCard.findViewById(R.id.goButton);
-            LottieAnimationView lottieAnimation = topCard.findViewById(R.id.lottieAnimation);
-
-            titleText.setText("Flash Sale! 🔥");
-            subText.setText("50% OFF on all fiction books\nLimited time offer!");
-
-            try {
-                // Set first animation
-                lottieAnimation.setAnimation(R.raw.books_animation);
-                long duration = lottieAnimation.getDuration();
-                Log.d("HomeFragment", "First animation duration: " + duration);
-                lottieAnimation.playAnimation();
-
-                // If duration is 0, set a default (1 second)
-                if (duration == 0) {
-                    duration = 1000;
-                }
-
-                // Switch to second animation after the duration of the first
-                new Handler().postDelayed(() -> {
-                    try {
-                        lottieAnimation.setAnimation(R.raw.books_animation2);
-                        lottieAnimation.playAnimation();
-                        Log.d("HomeFragment", "Second animation started");
-                    } catch (Exception e) {
-                        Log.d("HomeFragment", "Second Lottie animation not found", e);
-                    }
-                }, duration);
-
-            } catch (Exception e) {
-                Log.d("HomeFragment", "First Lottie animation not found", e);
-            }
-
-            goButton.setOnClickListener(v -> {
-                if (getActivity() instanceof HomeActivity) {
-                    ((HomeActivity) getActivity()).binding.navigationView.setCheckedItem(R.id.nav_all_book);
-                    ((HomeActivity) getActivity()).LoadFragment(new AllBookFragment());
-                }
-            });
         }
     }
 
@@ -305,6 +332,34 @@ public class HomeFragment extends Fragment {
                 loadDefaultBooks();
             }
         });
+    }
+
+    private void setupGenreButtons() {
+        // Find genre buttons by their IDs
+        btnJapanese = binding.getRoot().findViewById(R.id.japaneseGenre);
+        btnComedy = binding.getRoot().findViewById(R.id.comedyGenre);
+        btnMystery = binding.getRoot().findViewById(R.id.mysteryGenre);
+        btnHistorical = binding.getRoot().findViewById(R.id.historicalGenre);
+        btnBiography = binding.getRoot().findViewById(R.id.biographyGenre);
+        btnHorror = binding.getRoot().findViewById(R.id.horrorGenre);
+        btnFantasy = binding.getRoot().findViewById(R.id.fantasyGenre);
+
+        // Set click listeners for genre buttons
+        View.OnClickListener genreClickListener = v -> {
+            String genre = getGenreFromButtonId(v.getId());
+            if (genre != null) {
+                openAllBooksFragmentWithGenre(genre);
+            }
+        };
+
+        // Apply click listeners to all genre buttons
+        if (btnJapanese != null) btnJapanese.setOnClickListener(genreClickListener);
+        if (btnComedy != null) btnComedy.setOnClickListener(genreClickListener);
+        if (btnMystery != null) btnMystery.setOnClickListener(genreClickListener);
+        if (btnHistorical != null) btnHistorical.setOnClickListener(genreClickListener);
+        if (btnBiography != null) btnBiography.setOnClickListener(genreClickListener);
+        if (btnHorror != null) btnHorror.setOnClickListener(genreClickListener);
+        if (btnFantasy != null) btnFantasy.setOnClickListener(genreClickListener);
     }
 
     // Auto-slide functionality
@@ -606,7 +661,7 @@ public class HomeFragment extends Fragment {
         setupCardClickListener(binding.latestCard2, currentLatestBook2, 2);
         setupCardClickListener(binding.latestCard3, currentLatestBook3, 3);
 
-        // Set up skip button
+        // Set up skip button for homeactivity
         binding.tvSkip.setOnClickListener(v -> {
             if (getActivity() instanceof HomeActivity) {
                 ((HomeActivity) getActivity()).binding.navigationView.setCheckedItem(R.id.nav_all_book);
@@ -808,6 +863,20 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         stopAutoSlide();
+
+        // Remove any scroll listeners
+        if (binding != null) {
+            HorizontalScrollView scrollView = binding.promotionScrollView;
+            if (scrollView != null && mScrollListener != null) {
+                scrollView.getViewTreeObserver().removeOnScrollChangedListener(mScrollListener);
+            }
+        }
+
+        // Clean up dots handler
+        if (dotsHandler != null) {
+            dotsHandler.removeCallbacksAndMessages(null);
+        }
+
         binding = null;
     }
 
